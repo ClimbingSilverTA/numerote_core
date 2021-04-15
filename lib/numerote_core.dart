@@ -3,6 +3,8 @@ import 'package:numerote_core/src/adapters/notes_memory_adapter.dart';
 import 'package:numerote_core/src/models/label.dart';
 import 'package:numerote_core/src/models/note.dart';
 import 'package:numerote_core/src/repos/core_repo.dart';
+export 'package:numerote_core/src/models/label.dart';
+export 'package:numerote_core/src/models/note.dart';
 
 class NumeroteCore {
   final CoreRepo<Note> notes;
