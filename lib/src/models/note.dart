@@ -19,7 +19,7 @@ class Note {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  factory Note.createNew({String? contents}) => Note(contents: contents ?? "");
+  factory Note.create({String? contents}) => Note(contents: contents ?? "");
 
   @override
   bool operator ==(Object other) =>

@@ -13,7 +13,7 @@ void main() {
     test('Check that a Note can be created/edited/deleted', () async {
       expect(await repo.getNotes(), isEmpty);
 
-      final note = Note.createNew(
+      final note = Note.create(
         contents: "A new note about something important",
       );
       await repo.saveNote(note);

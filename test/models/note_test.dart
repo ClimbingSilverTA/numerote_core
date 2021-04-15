@@ -3,13 +3,16 @@ import 'package:numerote_core/src/models/note.dart';
 
 void main() {
   group('Basic model tests', () {
-    test('Check that createNew factory works correctly', () {
-      final note = Note.createNew();
+    test('Check that create factory works correctly', () {
+      var note = Note.create();
       expect(note.contents, isEmpty);
+
+      note = Note.create(contents: "testing");
+      expect(note.contents, "testing");
     });
 
     test('Check that == is working correctly', () {
-      final firstNote = Note.createNew();
+      final firstNote = Note.create();
       final secondNote = firstNote.copyWith(contents: "Some new text");
       expect(firstNote, secondNote);
 
@@ -19,8 +22,12 @@ void main() {
     });
 
     test('Check copyWith method more thoroughly', () {
-      final firstNote = Note.createNew();
-      final secondNote = firstNote.copyWith(updatedAt: DateTime.now());
+      final firstNote = Note.create();
+      final secondNote = firstNote.copyWith(
+        updatedAt: DateTime.now().add(
+          const Duration(seconds: 3),
+        ),
+      );
 
       expect(firstNote.documentId, secondNote.documentId);
       expect(firstNote.contents, secondNote.contents);
@@ -30,7 +37,7 @@ void main() {
     });
 
     test('Check hashCode for coverage', () {
-      final firstNote = Note.createNew();
+      final firstNote = Note.create();
       expect(firstNote.documentId, isNotEmpty);
       expect(firstNote.hashCode, firstNote.documentId.hashCode);
     });
