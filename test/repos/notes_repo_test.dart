@@ -49,5 +49,36 @@ void main() {
       await repo.deleteLabel(label);
       expect(await repo.getLabels(), isEmpty);
     });
+
+    test('Ensure that Notes can be filtered via a Label', () async {
+      final label = await repo.createLabel(Label.create(name: "Label1"));
+      await repo.saveNote(Note.create(contents: "This has no label"));
+      await repo.saveNote(
+        Note.create(contents: "This has a label attached").copyWith(
+          labels: [label!],
+        ),
+      );
+      expect(await repo.getNotes(), hasLength(2));
+      expect(await repo.getNotes(label: label), hasLength(1));
+      expect(
+        (await repo.getNotes(label: label)).first.contents,
+        "This has a label attached",
+      );
+    });
+
+    test('Ensure that deleting a Label also removes it from Notes', () async {
+      final label = await repo.createLabel(Label.create(name: "Salmon"));
+      final note = Note.create(contents: "A new note");
+      note.labels.add(label!);
+      await repo.saveNote(note);
+
+      var savedNote = (await repo.getNotes()).first;
+      expect(savedNote.labels, contains(label));
+
+      await repo.deleteLabel(label);
+      savedNote = (await repo.getNotes()).first;
+      expect(savedNote.labels, isNot(contains(label)));
+      expect(await repo.getLabels(), isEmpty);
+    });
   });
 }
