@@ -7,7 +7,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   final List<Label> _labels = [];
 
   @override
-  Future<Note> saveNote(Note note) async {
+  Future<Note?> saveNote(Note note) async {
     if (_notes.contains(note)) {
       final index = _notes.indexWhere(
         (element) => element.documentId == note.documentId,

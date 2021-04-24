@@ -7,7 +7,7 @@ abstract class NotesDataAdapter {
     int limit = 10,
     Label? label,
   });
-  Future<Note> saveNote(Note note);
+  Future<Note?> saveNote(Note note);
   Future<void> deleteNote(Note note);
 
   Future<List<Label>> getLabels();
