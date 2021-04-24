@@ -13,4 +13,6 @@ abstract class NotesDataAdapter {
   Future<List<Label>> getLabels();
   Future<Label?> createLabel(Label label);
   Future<void> deleteLabel(Label label);
+
+  Future<void> nuke();
 }

@@ -74,4 +74,10 @@ class NotesMemoryAdapter extends NotesDataAdapter {
 
     return null;
   }
+
+  @override
+  Future<void> nuke() async {
+    _labels.clear();
+    _notes.clear();
+  }
 }

@@ -5,9 +5,9 @@ import 'package:numerote_core/src/models/note.dart';
 
 void main() {
   group('Tests with in-memory adapter', () {
-    late NumeroteCore core;
+    final core = NumeroteCore.inMemory();
 
-    setUp(() => core = NumeroteCore.inMemory());
+    setUp(() async => core.nuke());
 
     test('Check that a Note can be created/edited/deleted', () async {
       expect(await core.notes.find(), isEmpty);

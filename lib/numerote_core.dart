@@ -9,12 +9,16 @@ export 'package:numerote_core/src/models/note.dart';
 class NumeroteCore {
   final CoreRepo<Note> notes;
   final CoreRepo<Label> labels;
+  final NotesDataAdapter _adapter;
 
   NumeroteCore._internal({
     required NotesDataAdapter adapter,
-  })   : notes = CoreRepo<Note>(adapter: adapter),
+  })   : _adapter = adapter,
+        notes = CoreRepo<Note>(adapter: adapter),
         labels = CoreRepo<Label>(adapter: adapter);
 
   factory NumeroteCore.inMemory() =>
       NumeroteCore._internal(adapter: NotesMemoryAdapter());
+
+  Future<void> nuke() => _adapter.nuke();
 }
