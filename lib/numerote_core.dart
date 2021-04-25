@@ -1,5 +1,5 @@
 import 'package:numerote_core/src/adapters/notes_data_adapter.dart';
-import 'package:numerote_core/src/adapters/notes_memory_adapter.dart';
+import 'package:numerote_core/src/adapters/memory/notes_memory_adapter.dart';
 import 'package:numerote_core/src/adapters/sqlite/notes_sql_adapter.dart';
 import 'package:numerote_core/src/models/label.dart';
 import 'package:numerote_core/src/models/note.dart';
