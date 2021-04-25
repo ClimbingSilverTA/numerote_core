@@ -88,6 +88,28 @@ void main() {
         expect(savedNote.labels, isNot(contains(label)));
         expect(await core.labels.find(), isEmpty);
       });
+
+      test('Ensure that limit/label is being enforced', () async {
+        final fruitLabel = await core.labels.save(Label.create(name: "Fruit"));
+        final mathLabel = await core.labels.save(Label.create(name: "Math"));
+
+        for (var i = 0; i < 20; i++) {
+          await core.notes.save(Note.create(contents: "Note $i"));
+        }
+
+        var notes = await core.notes.find(limit: 3);
+        expect(notes, hasLength(3));
+
+        core.notes.save(notes[0].copyWith(
+          labels: [fruitLabel!],
+        ));
+
+        notes = await core.notes.find(limit: 3, label: fruitLabel);
+        expect(notes, hasLength(1));
+
+        notes = await core.notes.find(limit: 3, label: mathLabel);
+        expect(notes, isEmpty);
+      });
     });
   });
 }
