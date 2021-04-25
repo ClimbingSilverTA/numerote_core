@@ -1,3 +1,5 @@
-## 0.0.1
+## v0.2.0
+- Added adapter for SQLite(with Moor).
 
-* TODO: Describe initial release.
+## v0.1.0
+- First pre-release.
