@@ -17,10 +17,18 @@ dependencies:
 
   uuid: ^3.0.4  
 
+  ## SQLite
+  moor: ^4.2.1
+  sqlite3_flutter_libs: ^0.4.1
+  path_provider: ^2.0.1
+  path: ^1.8.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^1.5.3  
+  moor_generator: ^4.2.1
+  build_runner: ^1.12.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

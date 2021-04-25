@@ -7,7 +7,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   final List<Label> _labels = [];
 
   @override
-  Future<Note> saveNote(Note note) async {
+  Future<Note?> saveNote(Note note) async {
     if (_notes.contains(note)) {
       final index = _notes.indexWhere(
         (element) => element.documentId == note.documentId,
@@ -38,11 +38,11 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     int limit = 10,
     Label? label,
   }) async {
-    _notes.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    _notes.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
     final existingIndex = _notes.indexWhere(
       (element) => element.documentId == lastId,
     );
-    final index = existingIndex == -1 ? 0 : existingIndex;
+    final index = existingIndex == -1 ? 0 : existingIndex + 1;
     return _notes
         .where((element) {
           if (label == null) return true;
@@ -73,5 +73,11 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     }
 
     return null;
+  }
+
+  @override
+  Future<void> nuke() async {
+    _labels.clear();
+    _notes.clear();
   }
 }
