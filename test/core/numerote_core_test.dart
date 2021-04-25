@@ -89,6 +89,32 @@ void main() {
         expect(await core.labels.find(), isEmpty);
       });
 
+      test('Ensure that notes are being ordered by updatedAt, can be skipped',
+          () async {
+        final note1 = await core.notes.save(
+          Note.create(contents: "Note A").copyWith(
+            updatedAt: DateTime.now().add(const Duration(hours: 1)),
+          ),
+        );
+
+        final note2 = await core.notes.save(
+          Note.create(contents: "Note B").copyWith(
+            updatedAt: DateTime.now().add(const Duration(minutes: 30)),
+          ),
+        );
+
+        final note3 = await core.notes.save(Note.create(contents: "Note C"));
+
+        var notes = await core.notes.find();
+        expect(notes, hasLength(3));
+        expect(notes.first, note1);
+        expect(notes.last, note3);
+
+        notes = await core.notes.find(lastId: note2!.documentId);
+        expect(notes, hasLength(1));
+        expect(notes.first, note3);
+      });
+
       test('Ensure that limit/label is being enforced', () async {
         final fruitLabel = await core.labels.save(Label.create(name: "Fruit"));
         final mathLabel = await core.labels.save(Label.create(name: "Math"));

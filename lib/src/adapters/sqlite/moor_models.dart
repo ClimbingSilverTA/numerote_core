@@ -70,7 +70,12 @@ class MoorDatabase extends _$MoorDatabase {
   }
 
   Future<List<core.Label>> getLabels() async {
-    final existingLabels = await select(labels).get();
+    final existingLabels = await (select(labels)
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)
+          ]))
+        .get();
     return existingLabels.map((l) => l.toCoreLabel()).toList();
   }
 
@@ -99,7 +104,13 @@ class MoorDatabase extends _$MoorDatabase {
       query = query..where((n) => n.documentId.isIn(searchIds));
     }
 
-    final existingNotes = await (query..limit(limit)).get();
+    final existingNotes = await (query
+          ..limit(limit)
+          ..orderBy([
+            (t) =>
+                OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
+          ]))
+        .get();
     final populatedNotes = await populateLabels(existingNotes);
     return populatedNotes.map((n) => n.toCoreNote()).toList();
   }
