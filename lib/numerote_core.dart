@@ -1,5 +1,6 @@
 import 'package:numerote_core/src/adapters/notes_data_adapter.dart';
 import 'package:numerote_core/src/adapters/notes_memory_adapter.dart';
+import 'package:numerote_core/src/adapters/sqlite/notes_sql_adapter.dart';
 import 'package:numerote_core/src/models/label.dart';
 import 'package:numerote_core/src/models/note.dart';
 import 'package:numerote_core/src/repos/core_repo.dart';
@@ -19,6 +20,12 @@ class NumeroteCore {
 
   factory NumeroteCore.inMemory() =>
       NumeroteCore._internal(adapter: NotesMemoryAdapter());
+
+  factory NumeroteCore.sql({bool testing = false}) {
+    return NumeroteCore._internal(
+      adapter: NotesSQLAdapter(testing: testing),
+    );
+  }
 
   Future<void> nuke() => _adapter.nuke();
 }
