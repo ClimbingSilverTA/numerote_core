@@ -23,5 +23,21 @@ void main() {
       final label = Label.create(name: "読書");
       expect(label.hashCode, label.documentId.hashCode);
     });
+
+    test('Check that copyWith method is working correctly', () {
+      final original = Label.create(name: "TestLabel");
+      expect(original.copyWith(name: "ABC").name, "ABC");
+      expect(
+        original
+            .copyWith(createdAt: DateTime.now().add(const Duration(minutes: 1)))
+            .createdAt,
+        isNot(original.createdAt),
+      );
+
+      final copy = original.copyWith(documentId: "a-new-id");
+      expect(copy.documentId, isNot(original.documentId));
+      expect(copy.name, original.name);
+      expect(copy.createdAt, original.createdAt);
+    });
   });
 }

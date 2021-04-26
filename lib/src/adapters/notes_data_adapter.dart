@@ -10,7 +10,10 @@ abstract class NotesDataAdapter {
   Future<Note?> saveNote(Note note);
   Future<void> deleteNote(Note note);
 
-  Future<List<Label>> getLabels();
+  Future<List<Label>> getLabels({
+    String lastId = "",
+    int limit = 10,
+  });
   Future<Label?> createLabel(Label label);
   Future<void> deleteLabel(Label label);
 

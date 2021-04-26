@@ -36,7 +36,10 @@ class CoreRepo<R> {
         label: label,
       ) as List<R>;
     } else if (this is CoreRepo<Label>) {
-      return await _adapter.getLabels() as List<R>;
+      return await _adapter.getLabels(
+        lastId: lastId,
+        limit: limit,
+      ) as List<R>;
     }
     return [];
   }
