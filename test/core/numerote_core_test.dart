@@ -4,7 +4,7 @@ import 'package:numerote_core/src/models/label.dart';
 import 'package:numerote_core/src/models/note.dart';
 
 void main() {
-  group('Tests with in-memory adapter', () {
+  group('Test different adapters', () {
     final cores = [
       NumeroteCore.inMemory(),
       NumeroteCore.sql(testing: true),
@@ -91,19 +91,24 @@ void main() {
 
       test('Ensure that notes are being ordered by updatedAt, can be skipped',
           () async {
-        final note1 = await core.notes.save(
-          Note.create(contents: "Note A").copyWith(
+        var note1 = await core.notes.save(Note.create(contents: "Note A"));
+        var note2 = await core.notes.save(Note.create(contents: "Note B"));
+        final note3 = await core.notes.save(Note.create(contents: "Note C"));
+
+        note1 = await core.notes.save(
+          note1!.copyWith(
             updatedAt: DateTime.now().add(const Duration(hours: 1)),
           ),
         );
 
-        final note2 = await core.notes.save(
-          Note.create(contents: "Note B").copyWith(
+        note2 = await core.notes.save(
+          note2!.copyWith(
             updatedAt: DateTime.now().add(const Duration(minutes: 30)),
           ),
         );
 
-        final note3 = await core.notes.save(Note.create(contents: "Note C"));
+        expect(note1, isNotNull);
+        expect(note2, isNotNull);
 
         var notes = await core.notes.find();
         expect(notes, hasLength(3));
