@@ -2,7 +2,7 @@ import 'package:moor/ffi.dart';
 import 'package:numerote_core/src/adapters/notes_data_adapter.dart';
 import 'package:numerote_core/src/models/note.dart';
 import 'package:numerote_core/src/models/label.dart';
-import 'package:numerote_core/src/adapters/sqlite/moor_models.dart' as moor;
+import 'package:numerote_core/src/adapters/sqlite/moor_database.dart' as moor;
 
 class NotesSQLAdapter extends NotesDataAdapter {
   NotesSQLAdapter({bool testing = false})
