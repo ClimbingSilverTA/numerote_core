@@ -47,23 +47,22 @@ class MoorDatabase extends _$MoorDatabase {
     String lastId = "",
     int limit = 10,
   }) async {
-    var query = select(labels);
+    var query = select(labels)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)
+      ]);
 
     if (lastId.isNotEmpty) {
       final existingLabel = await _findLabel(documentId: lastId);
       if (existingLabel != null) {
-        query = query..where((l) => l.id.isBiggerThanValue(existingLabel.id));
+        query = query
+          ..where(
+            (l) => l.createdAt.isSmallerThanValue(existingLabel.createdAt),
+          );
       }
     }
 
-    final results = await (query
-          ..limit(limit)
-          ..orderBy([
-            (t) =>
-                OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)
-          ]))
-        .get();
-
+    final results = await (query..limit(limit)).get();
     return results.map((l) => l.toCoreLabel()).toList();
   }
 
@@ -72,12 +71,18 @@ class MoorDatabase extends _$MoorDatabase {
     int limit = 10,
     core.Label? label,
   }) async {
-    var query = select(notes);
+    var query = select(notes)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
+      ]);
 
     if (lastId.isNotEmpty) {
       final existingNote = await _findNote(documentId: lastId);
       if (existingNote != null) {
-        query = query..where((n) => n.id.isBiggerThanValue(existingNote.id));
+        query = query
+          ..where(
+            (n) => n.updatedAt.isSmallerThanValue(existingNote.updatedAt),
+          );
       }
     }
 
@@ -92,13 +97,7 @@ class MoorDatabase extends _$MoorDatabase {
       query = query..where((n) => n.documentId.isIn(searchIds));
     }
 
-    final existingNotes = await (query
-          ..limit(limit)
-          ..orderBy([
-            (t) =>
-                OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
-          ]))
-        .get();
+    final existingNotes = await (query..limit(limit)).get();
     final populatedNotes = await populateLabels(existingNotes);
     return populatedNotes.map((n) => n.toCoreNote()).toList();
   }
