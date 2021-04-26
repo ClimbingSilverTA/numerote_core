@@ -2,6 +2,7 @@ import 'package:moor/moor.dart';
 import 'package:numerote_core/src/adapters/sqlite/moor_models.dart';
 import 'package:numerote_core/src/models/label.dart' as core;
 import 'package:numerote_core/src/models/note.dart' as core;
+import 'package:numerote_core/src/adapters/sqlite/moor_database.dart';
 
 extension MoorLabelExt on Label {
   core.Label toCoreLabel() {
