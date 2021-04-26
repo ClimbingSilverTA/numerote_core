@@ -13,23 +13,20 @@ class NotesMemoryAdapter extends NotesDataAdapter {
         (element) => element.documentId == note.documentId,
       );
       if (index > -1) {
-        _notes[index] = note.copyWith(
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
+        _notes[index] = note;
       }
     } else {
-      _notes.add(note.copyWith(updatedAt: DateTime.now()));
+      _notes.add(note);
     }
 
-    _notes.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    _notes.sortByUpdated();
     return note;
   }
 
   @override
   Future<void> deleteNote(Note note) async {
     _notes.removeWhere((element) => element.documentId == note.documentId);
-    _notes.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    _notes.sortByUpdated();
   }
 
   @override
@@ -38,7 +35,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     int limit = 10,
     Label? label,
   }) async {
-    _notes.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+    _notes.sortByUpdated();
     final existingIndex = _notes.indexWhere(
       (element) => element.documentId == lastId,
     );
@@ -60,15 +57,30 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     for (final note in _notes) {
       note.labels.remove(label);
     }
+
+    _labels.sortByCreated();
   }
 
   @override
-  Future<List<Label>> getLabels() async => _labels;
+  Future<List<Label>> getLabels({
+    String lastId = "",
+    int limit = 10,
+  }) async {
+    _labels.sortByCreated();
+
+    final existingIndex = _labels.indexWhere(
+      (element) => element.documentId == lastId,
+    );
+
+    final index = existingIndex == -1 ? 0 : existingIndex + 1;
+    return _labels.skip(index).take(limit).toList();
+  }
 
   @override
   Future<Label?> createLabel(Label label) async {
     if (!_labels.contains(label)) {
       _labels.add(label);
+      _labels.sortByCreated();
       return label;
     }
 
@@ -79,5 +91,17 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   Future<void> nuke() async {
     _labels.clear();
     _notes.clear();
+  }
+}
+
+extension _SortNotes on List<Note> {
+  void sortByUpdated() {
+    sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
+  }
+}
+
+extension _SortLabels on List<Label> {
+  void sortByCreated() {
+    sort((b, a) => a.createdAt.compareTo(b.createdAt));
   }
 }

@@ -115,7 +115,7 @@ void main() {
         expect(notes.first, note3);
       });
 
-      test('Ensure that limit/label is being enforced', () async {
+      test('Ensure that limit/label for Note is being enforced', () async {
         final fruitLabel = await core.labels.save(Label.create(name: "Fruit"));
         final mathLabel = await core.labels.save(Label.create(name: "Math"));
 
@@ -135,6 +135,32 @@ void main() {
 
         notes = await core.notes.find(limit: 3, label: mathLabel);
         expect(notes, isEmpty);
+      });
+
+      test('Ensure that order/limit/skipping for Label is being enforced',
+          () async {
+        final mathLabel = await core.labels.save(
+          Label.create(name: "수학").copyWith(
+            createdAt: DateTime.now().add(const Duration(minutes: 10)),
+          ),
+        );
+        final englishLabel = await core.labels.save(
+          Label.create(name: "영어").copyWith(
+            createdAt: DateTime.now().add(const Duration(minutes: 6)),
+          ),
+        );
+        final readingLabel = await core.labels.save(Label.create(name: "독서"));
+        var labels = await core.labels.find();
+        expect(labels, hasLength(3));
+        expect(labels.first, mathLabel);
+        expect(labels.last, readingLabel);
+
+        labels = await core.labels.find(lastId: englishLabel!.documentId);
+        expect(labels, hasLength(1));
+        expect(labels.first, readingLabel);
+
+        labels = await core.labels.find(limit: 2);
+        expect(labels, hasLength(2));
       });
     });
   });

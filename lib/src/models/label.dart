@@ -20,4 +20,16 @@ class Label {
 
   @override
   int get hashCode => documentId.hashCode;
+
+  Label copyWith({
+    String? documentId,
+    String? name,
+    DateTime? createdAt,
+  }) {
+    return Label(
+      documentId: documentId ?? this.documentId,
+      name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

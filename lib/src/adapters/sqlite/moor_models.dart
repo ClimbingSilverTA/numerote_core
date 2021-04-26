@@ -62,6 +62,10 @@ class MoorDatabase extends _$MoorDatabase {
       (select(notes)..where((n) => n.documentId.equals(documentId)))
           .getSingleOrNull();
 
+  Future<Label?> _findLabel({required String documentId}) async =>
+      (select(labels)..where((l) => l.documentId.equals(documentId)))
+          .getSingleOrNull();
+
   Future<int> saveLabel(core.Label label) async =>
       into(labels).insert(label.toCompanion(), mode: InsertMode.replace);
 
@@ -69,14 +73,28 @@ class MoorDatabase extends _$MoorDatabase {
     await (delete(labels)..where((l) => l.documentId.equals(documentId))).go();
   }
 
-  Future<List<core.Label>> getLabels() async {
-    final existingLabels = await (select(labels)
+  Future<List<core.Label>> getLabels({
+    String lastId = "",
+    int limit = 10,
+  }) async {
+    var query = select(labels);
+
+    if (lastId.isNotEmpty) {
+      final existingLabel = await _findLabel(documentId: lastId);
+      if (existingLabel != null) {
+        query = query..where((l) => l.id.isBiggerThanValue(existingLabel.id));
+      }
+    }
+
+    final results = await (query
+          ..limit(limit)
           ..orderBy([
             (t) =>
                 OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)
           ]))
         .get();
-    return existingLabels.map((l) => l.toCoreLabel()).toList();
+
+    return results.map((l) => l.toCoreLabel()).toList();
   }
 
   Future<List<core.Note>> getNotes({

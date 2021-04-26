@@ -27,7 +27,11 @@ class NotesSQLAdapter extends NotesDataAdapter {
       _database.deleteNote(documentId: note.documentId);
 
   @override
-  Future<List<Label>> getLabels() async => _database.getLabels();
+  Future<List<Label>> getLabels({
+    String lastId = "",
+    int limit = 10,
+  }) async =>
+      _database.getLabels(lastId: lastId, limit: limit);
 
   @override
   Future<List<Note>> getNotes({
