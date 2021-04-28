@@ -11,7 +11,7 @@ class Label extends DataClass implements Insertable<Label> {
   final int id;
   final String documentId;
   final String name;
-  final DateTime createdAt;
+  final int createdAt;
   Label(
       {required this.id,
       required this.documentId,
@@ -22,13 +22,12 @@ class Label extends DataClass implements Insertable<Label> {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Label(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       documentId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}document_id'])!,
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      createdAt: dateTimeType
+      createdAt: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
     );
   }
@@ -38,7 +37,7 @@ class Label extends DataClass implements Insertable<Label> {
     map['id'] = Variable<int>(id);
     map['document_id'] = Variable<String>(documentId);
     map['name'] = Variable<String>(name);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = Variable<int>(createdAt);
     return map;
   }
 
@@ -58,7 +57,7 @@ class Label extends DataClass implements Insertable<Label> {
       id: serializer.fromJson<int>(json['id']),
       documentId: serializer.fromJson<String>(json['documentId']),
       name: serializer.fromJson<String>(json['name']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
     );
   }
   @override
@@ -68,12 +67,11 @@ class Label extends DataClass implements Insertable<Label> {
       'id': serializer.toJson<int>(id),
       'documentId': serializer.toJson<String>(documentId),
       'name': serializer.toJson<String>(name),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'createdAt': serializer.toJson<int>(createdAt),
     };
   }
 
-  Label copyWith(
-          {int? id, String? documentId, String? name, DateTime? createdAt}) =>
+  Label copyWith({int? id, String? documentId, String? name, int? createdAt}) =>
       Label(
         id: id ?? this.id,
         documentId: documentId ?? this.documentId,
@@ -108,7 +106,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
   final Value<int> id;
   final Value<String> documentId;
   final Value<String> name;
-  final Value<DateTime> createdAt;
+  final Value<int> createdAt;
   const LabelsCompanion({
     this.id = const Value.absent(),
     this.documentId = const Value.absent(),
@@ -119,7 +117,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
     this.id = const Value.absent(),
     required String documentId,
     required String name,
-    required DateTime createdAt,
+    required int createdAt,
   })   : documentId = Value(documentId),
         name = Value(name),
         createdAt = Value(createdAt);
@@ -127,7 +125,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
     Expression<int>? id,
     Expression<String>? documentId,
     Expression<String>? name,
-    Expression<DateTime>? createdAt,
+    Expression<int>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -141,7 +139,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
       {Value<int>? id,
       Value<String>? documentId,
       Value<String>? name,
-      Value<DateTime>? createdAt}) {
+      Value<int>? createdAt}) {
     return LabelsCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
@@ -163,7 +161,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
       map['name'] = Variable<String>(name.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = Variable<int>(createdAt.value);
     }
     return map;
   }
@@ -209,9 +207,9 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
-  late final GeneratedDateTimeColumn createdAt = _constructCreatedAt();
-  GeneratedDateTimeColumn _constructCreatedAt() {
-    return GeneratedDateTimeColumn(
+  late final GeneratedIntColumn createdAt = _constructCreatedAt();
+  GeneratedIntColumn _constructCreatedAt() {
+    return GeneratedIntColumn(
       'created_at',
       $tableName,
       false,
@@ -275,8 +273,8 @@ class Note extends DataClass implements Insertable<Note> {
   final int id;
   final String documentId;
   final String contents;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final int createdAt;
+  final int updatedAt;
   Note(
       {required this.id,
       required this.documentId,
@@ -288,16 +286,15 @@ class Note extends DataClass implements Insertable<Note> {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Note(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       documentId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}document_id'])!,
       contents: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}contents'])!,
-      createdAt: dateTimeType
+      createdAt: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      updatedAt: dateTimeType
+      updatedAt: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
     );
   }
@@ -307,8 +304,8 @@ class Note extends DataClass implements Insertable<Note> {
     map['id'] = Variable<int>(id);
     map['document_id'] = Variable<String>(documentId);
     map['contents'] = Variable<String>(contents);
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['created_at'] = Variable<int>(createdAt);
+    map['updated_at'] = Variable<int>(updatedAt);
     return map;
   }
 
@@ -329,8 +326,8 @@ class Note extends DataClass implements Insertable<Note> {
       id: serializer.fromJson<int>(json['id']),
       documentId: serializer.fromJson<String>(json['documentId']),
       contents: serializer.fromJson<String>(json['contents']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      createdAt: serializer.fromJson<int>(json['createdAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
     );
   }
   @override
@@ -340,8 +337,8 @@ class Note extends DataClass implements Insertable<Note> {
       'id': serializer.toJson<int>(id),
       'documentId': serializer.toJson<String>(documentId),
       'contents': serializer.toJson<String>(contents),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'createdAt': serializer.toJson<int>(createdAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
     };
   }
 
@@ -349,8 +346,8 @@ class Note extends DataClass implements Insertable<Note> {
           {int? id,
           String? documentId,
           String? contents,
-          DateTime? createdAt,
-          DateTime? updatedAt}) =>
+          int? createdAt,
+          int? updatedAt}) =>
       Note(
         id: id ?? this.id,
         documentId: documentId ?? this.documentId,
@@ -392,8 +389,8 @@ class NotesCompanion extends UpdateCompanion<Note> {
   final Value<int> id;
   final Value<String> documentId;
   final Value<String> contents;
-  final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
+  final Value<int> createdAt;
+  final Value<int> updatedAt;
   const NotesCompanion({
     this.id = const Value.absent(),
     this.documentId = const Value.absent(),
@@ -405,8 +402,8 @@ class NotesCompanion extends UpdateCompanion<Note> {
     this.id = const Value.absent(),
     required String documentId,
     required String contents,
-    required DateTime createdAt,
-    required DateTime updatedAt,
+    required int createdAt,
+    required int updatedAt,
   })   : documentId = Value(documentId),
         contents = Value(contents),
         createdAt = Value(createdAt),
@@ -415,8 +412,8 @@ class NotesCompanion extends UpdateCompanion<Note> {
     Expression<int>? id,
     Expression<String>? documentId,
     Expression<String>? contents,
-    Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -431,8 +428,8 @@ class NotesCompanion extends UpdateCompanion<Note> {
       {Value<int>? id,
       Value<String>? documentId,
       Value<String>? contents,
-      Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt}) {
+      Value<int>? createdAt,
+      Value<int>? updatedAt}) {
     return NotesCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
@@ -455,10 +452,10 @@ class NotesCompanion extends UpdateCompanion<Note> {
       map['contents'] = Variable<String>(contents.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = Variable<int>(createdAt.value);
     }
     if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+      map['updated_at'] = Variable<int>(updatedAt.value);
     }
     return map;
   }
@@ -509,9 +506,9 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
 
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
-  late final GeneratedDateTimeColumn createdAt = _constructCreatedAt();
-  GeneratedDateTimeColumn _constructCreatedAt() {
-    return GeneratedDateTimeColumn(
+  late final GeneratedIntColumn createdAt = _constructCreatedAt();
+  GeneratedIntColumn _constructCreatedAt() {
+    return GeneratedIntColumn(
       'created_at',
       $tableName,
       false,
@@ -520,9 +517,9 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
 
   final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
-  late final GeneratedDateTimeColumn updatedAt = _constructUpdatedAt();
-  GeneratedDateTimeColumn _constructUpdatedAt() {
-    return GeneratedDateTimeColumn(
+  late final GeneratedIntColumn updatedAt = _constructUpdatedAt();
+  GeneratedIntColumn _constructUpdatedAt() {
+    return GeneratedIntColumn(
       'updated_at',
       $tableName,
       false,
