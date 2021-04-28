@@ -1,3 +1,6 @@
+## v0.3.0
+- Switched `DateTimeColumn` usages to `IntColumn` in SQLite adapter. 
+
 ## v0.2.2
 - Changed skipping behaviour for queries using the SQLite adapter(it was referencing the primary key column before).
 
