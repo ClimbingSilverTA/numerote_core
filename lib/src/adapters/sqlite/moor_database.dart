@@ -49,7 +49,8 @@ class MoorDatabase extends _$MoorDatabase {
   }) async {
     var query = select(labels)
       ..orderBy([
-        (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)
+        (t) =>
+            OrderingTerm(expression: t.createdAtMillis, mode: OrderingMode.desc)
       ]);
 
     if (lastId.isNotEmpty) {
@@ -57,7 +58,8 @@ class MoorDatabase extends _$MoorDatabase {
       if (existingLabel != null) {
         query = query
           ..where(
-            (l) => l.createdAt.isSmallerThanValue(existingLabel.createdAt),
+            (l) => l.createdAtMillis
+                .isSmallerThanValue(existingLabel.createdAtMillis),
           );
       }
     }
@@ -73,7 +75,8 @@ class MoorDatabase extends _$MoorDatabase {
   }) async {
     var query = select(notes)
       ..orderBy([
-        (t) => OrderingTerm(expression: t.updatedAt, mode: OrderingMode.desc)
+        (t) =>
+            OrderingTerm(expression: t.updatedAtMillis, mode: OrderingMode.desc)
       ]);
 
     if (lastId.isNotEmpty) {
@@ -81,7 +84,8 @@ class MoorDatabase extends _$MoorDatabase {
       if (existingNote != null) {
         query = query
           ..where(
-            (n) => n.updatedAt.isSmallerThanValue(existingNote.updatedAt),
+            (n) => n.updatedAtMillis
+                .isSmallerThanValue(existingNote.updatedAtMillis),
           );
       }
     }

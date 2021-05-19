@@ -36,7 +36,7 @@ void main() {
 
         savedNotes = await core.notes.find();
         expect(savedNotes, isNotEmpty);
-        expect(savedNotes.first, note);
+        expect(savedNotes.first.documentId, note.documentId);
         expect(savedNotes.first.contents, contents);
 
         await core.notes.delete(note);
@@ -97,13 +97,17 @@ void main() {
 
         note1 = await core.notes.save(
           note1!.copyWith(
-            updatedAt: DateTime.now().add(const Duration(hours: 1)),
+            updatedAtMillis: DateTime.now()
+                .add(const Duration(hours: 1))
+                .millisecondsSinceEpoch,
           ),
         );
 
         note2 = await core.notes.save(
           note2!.copyWith(
-            updatedAt: DateTime.now().add(const Duration(minutes: 30)),
+            updatedAtMillis: DateTime.now()
+                .add(const Duration(minutes: 30))
+                .millisecondsSinceEpoch,
           ),
         );
 
@@ -146,12 +150,16 @@ void main() {
           () async {
         final mathLabel = await core.labels.save(
           Label.create(name: "수학").copyWith(
-            createdAt: DateTime.now().add(const Duration(minutes: 10)),
+            createdAtMillis: DateTime.now()
+                .add(const Duration(minutes: 10))
+                .millisecondsSinceEpoch,
           ),
         );
         final englishLabel = await core.labels.save(
           Label.create(name: "영어").copyWith(
-            createdAt: DateTime.now().add(const Duration(minutes: 6)),
+            createdAtMillis: DateTime.now()
+                .add(const Duration(minutes: 6))
+                .millisecondsSinceEpoch,
           ),
         );
         final readingLabel = await core.labels.save(Label.create(name: "독서"));

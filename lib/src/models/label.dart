@@ -1,35 +1,24 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-class Label {
-  Label({
-    String? documentId,
-    required this.name,
-    DateTime? createdAt,
-  })  : documentId = documentId ?? const Uuid().v4(),
-        createdAt = createdAt ?? DateTime.now();
+part 'label.freezed.dart';
 
-  final String documentId;
-  final String name;
-  final DateTime createdAt;
+@freezed
+class Label with _$Label {
+  factory Label({
+    required String documentId,
+    required String name,
+    required int createdAtMillis,
+  }) = _Label;
 
-  factory Label.create({required String name}) => Label(name: name);
+  const Label._();
 
-  @override
-  bool operator ==(Object other) =>
-      other is Label && other.documentId == documentId;
+  DateTime get createdAt =>
+      DateTime.fromMillisecondsSinceEpoch(createdAtMillis);
 
-  @override
-  int get hashCode => documentId.hashCode;
-
-  Label copyWith({
-    String? documentId,
-    String? name,
-    DateTime? createdAt,
-  }) {
-    return Label(
-      documentId: documentId ?? this.documentId,
-      name: name ?? this.name,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  factory Label.create({required String name}) => Label(
+        name: name,
+        documentId: const Uuid().v4(),
+        createdAtMillis: DateTime.now().millisecondsSinceEpoch,
+      );
 }
