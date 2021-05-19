@@ -14,7 +14,8 @@ void main() {
     test('Check that == is working correctly', () {
       final firstNote = Note.create();
       final secondNote = firstNote.copyWith(contents: "Some new text");
-      expect(firstNote, secondNote);
+      expect(firstNote, isNot(secondNote));
+      expect(firstNote, firstNote);
 
       final thirdNote = secondNote.copyWith(documentId: "another_id");
       expect(thirdNote, isNot(firstNote));
@@ -24,9 +25,9 @@ void main() {
     test('Check copyWith method more thoroughly', () {
       final firstNote = Note.create();
       final secondNote = firstNote.copyWith(
-        updatedAt: DateTime.now().add(
-          const Duration(seconds: 3),
-        ),
+        updatedAtMillis: DateTime.now()
+            .add(const Duration(seconds: 3))
+            .millisecondsSinceEpoch,
       );
 
       expect(firstNote.documentId, secondNote.documentId);
@@ -34,12 +35,6 @@ void main() {
       expect(firstNote.labels.length, secondNote.labels.length);
       expect(firstNote.createdAt, secondNote.createdAt);
       expect(firstNote.updatedAt, isNot(secondNote.updatedAt));
-    });
-
-    test('Check hashCode for coverage', () {
-      final firstNote = Note.create();
-      expect(firstNote.documentId, isNotEmpty);
-      expect(firstNote.hashCode, firstNote.documentId.hashCode);
     });
   });
 }

@@ -41,8 +41,8 @@ extension MoorNoteLabelsExtension on NoteWithLabels {
       documentId: note.documentId,
       contents: note.contents,
       labels: labels.map((e) => e.toCoreLabel()).toList(),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(note.createdAt),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(note.updatedAt),
+      createdAtMillis: note.createdAt,
+      updatedAtMillis: note.updatedAt,
     );
   }
 }

@@ -8,13 +8,12 @@ class NotesMemoryAdapter extends NotesDataAdapter {
 
   @override
   Future<Note?> saveNote(Note note) async {
-    if (_notes.contains(note)) {
-      final index = _notes.indexWhere(
-        (element) => element.documentId == note.documentId,
-      );
-      if (index > -1) {
-        _notes[index] = note;
-      }
+    final index = _notes.indexWhere(
+      (element) => element.documentId == note.documentId,
+    );
+
+    if (index > -1) {
+      _notes[index] = note;
     } else {
       _notes.add(note);
     }
