@@ -9,7 +9,7 @@ extension MoorLabelExt on Label {
     return core.Label(
       documentId: documentId,
       name: name,
-      createdAtMillis: createdAt,
+      createdAtMillis: createdAtMillis,
     );
   }
 }
@@ -19,7 +19,7 @@ extension LabelExt on core.Label {
     return LabelsCompanion.insert(
       documentId: documentId,
       name: name,
-      createdAt: createdAt.millisecondsSinceEpoch,
+      createdAtMillis: createdAt.millisecondsSinceEpoch,
     );
   }
 }
@@ -29,8 +29,8 @@ extension NoteText on core.Note {
     return NotesCompanion.insert(
       documentId: documentId,
       contents: contents,
-      createdAt: createdAt.millisecondsSinceEpoch,
-      updatedAt: updatedAt.millisecondsSinceEpoch,
+      createdAtMillis: createdAt.millisecondsSinceEpoch,
+      updatedAtMillis: updatedAt.millisecondsSinceEpoch,
     );
   }
 }
@@ -41,8 +41,8 @@ extension MoorNoteLabelsExtension on NoteWithLabels {
       documentId: note.documentId,
       contents: note.contents,
       labels: labels.map((e) => e.toCoreLabel()).toList(),
-      createdAtMillis: note.createdAt,
-      updatedAtMillis: note.updatedAt,
+      createdAtMillis: note.createdAtMillis,
+      updatedAtMillis: note.updatedAtMillis,
     );
   }
 }

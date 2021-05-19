@@ -11,12 +11,12 @@ class Label extends DataClass implements Insertable<Label> {
   final int id;
   final String documentId;
   final String name;
-  final int createdAt;
+  final int createdAtMillis;
   Label(
       {required this.id,
       required this.documentId,
       required this.name,
-      required this.createdAt});
+      required this.createdAtMillis});
   factory Label.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -27,8 +27,8 @@ class Label extends DataClass implements Insertable<Label> {
       documentId: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}document_id'])!,
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      createdAt: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+      createdAtMillis: intType.mapFromDatabaseResponse(
+          data['${effectivePrefix}created_at_millis'])!,
     );
   }
   @override
@@ -37,7 +37,7 @@ class Label extends DataClass implements Insertable<Label> {
     map['id'] = Variable<int>(id);
     map['document_id'] = Variable<String>(documentId);
     map['name'] = Variable<String>(name);
-    map['created_at'] = Variable<int>(createdAt);
+    map['created_at_millis'] = Variable<int>(createdAtMillis);
     return map;
   }
 
@@ -46,7 +46,7 @@ class Label extends DataClass implements Insertable<Label> {
       id: Value(id),
       documentId: Value(documentId),
       name: Value(name),
-      createdAt: Value(createdAt),
+      createdAtMillis: Value(createdAtMillis),
     );
   }
 
@@ -57,7 +57,7 @@ class Label extends DataClass implements Insertable<Label> {
       id: serializer.fromJson<int>(json['id']),
       documentId: serializer.fromJson<String>(json['documentId']),
       name: serializer.fromJson<String>(json['name']),
-      createdAt: serializer.fromJson<int>(json['createdAt']),
+      createdAtMillis: serializer.fromJson<int>(json['createdAtMillis']),
     );
   }
   @override
@@ -67,16 +67,17 @@ class Label extends DataClass implements Insertable<Label> {
       'id': serializer.toJson<int>(id),
       'documentId': serializer.toJson<String>(documentId),
       'name': serializer.toJson<String>(name),
-      'createdAt': serializer.toJson<int>(createdAt),
+      'createdAtMillis': serializer.toJson<int>(createdAtMillis),
     };
   }
 
-  Label copyWith({int? id, String? documentId, String? name, int? createdAt}) =>
+  Label copyWith(
+          {int? id, String? documentId, String? name, int? createdAtMillis}) =>
       Label(
         id: id ?? this.id,
         documentId: documentId ?? this.documentId,
         name: name ?? this.name,
-        createdAt: createdAt ?? this.createdAt,
+        createdAtMillis: createdAtMillis ?? this.createdAtMillis,
       );
   @override
   String toString() {
@@ -84,14 +85,16 @@ class Label extends DataClass implements Insertable<Label> {
           ..write('id: $id, ')
           ..write('documentId: $documentId, ')
           ..write('name: $name, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAtMillis: $createdAtMillis')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(documentId.hashCode, $mrjc(name.hashCode, createdAt.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(documentId.hashCode,
+          $mrjc(name.hashCode, createdAtMillis.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -99,39 +102,39 @@ class Label extends DataClass implements Insertable<Label> {
           other.id == this.id &&
           other.documentId == this.documentId &&
           other.name == this.name &&
-          other.createdAt == this.createdAt);
+          other.createdAtMillis == this.createdAtMillis);
 }
 
 class LabelsCompanion extends UpdateCompanion<Label> {
   final Value<int> id;
   final Value<String> documentId;
   final Value<String> name;
-  final Value<int> createdAt;
+  final Value<int> createdAtMillis;
   const LabelsCompanion({
     this.id = const Value.absent(),
     this.documentId = const Value.absent(),
     this.name = const Value.absent(),
-    this.createdAt = const Value.absent(),
+    this.createdAtMillis = const Value.absent(),
   });
   LabelsCompanion.insert({
     this.id = const Value.absent(),
     required String documentId,
     required String name,
-    required int createdAt,
+    required int createdAtMillis,
   })   : documentId = Value(documentId),
         name = Value(name),
-        createdAt = Value(createdAt);
+        createdAtMillis = Value(createdAtMillis);
   static Insertable<Label> custom({
     Expression<int>? id,
     Expression<String>? documentId,
     Expression<String>? name,
-    Expression<int>? createdAt,
+    Expression<int>? createdAtMillis,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (documentId != null) 'document_id': documentId,
       if (name != null) 'name': name,
-      if (createdAt != null) 'created_at': createdAt,
+      if (createdAtMillis != null) 'created_at_millis': createdAtMillis,
     });
   }
 
@@ -139,12 +142,12 @@ class LabelsCompanion extends UpdateCompanion<Label> {
       {Value<int>? id,
       Value<String>? documentId,
       Value<String>? name,
-      Value<int>? createdAt}) {
+      Value<int>? createdAtMillis}) {
     return LabelsCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
       name: name ?? this.name,
-      createdAt: createdAt ?? this.createdAt,
+      createdAtMillis: createdAtMillis ?? this.createdAtMillis,
     );
   }
 
@@ -160,8 +163,8 @@ class LabelsCompanion extends UpdateCompanion<Label> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (createdAt.present) {
-      map['created_at'] = Variable<int>(createdAt.value);
+    if (createdAtMillis.present) {
+      map['created_at_millis'] = Variable<int>(createdAtMillis.value);
     }
     return map;
   }
@@ -172,7 +175,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
           ..write('id: $id, ')
           ..write('documentId: $documentId, ')
           ..write('name: $name, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAtMillis: $createdAtMillis')
           ..write(')'))
         .toString();
   }
@@ -205,19 +208,20 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
     return GeneratedTextColumn('name', $tableName, false, maxTextLength: 20);
   }
 
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  final VerificationMeta _createdAtMillisMeta =
+      const VerificationMeta('createdAtMillis');
   @override
-  late final GeneratedIntColumn createdAt = _constructCreatedAt();
-  GeneratedIntColumn _constructCreatedAt() {
+  late final GeneratedIntColumn createdAtMillis = _constructCreatedAtMillis();
+  GeneratedIntColumn _constructCreatedAtMillis() {
     return GeneratedIntColumn(
-      'created_at',
+      'created_at_millis',
       $tableName,
       false,
     );
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, documentId, name, createdAt];
+  List<GeneratedColumn> get $columns => [id, documentId, name, createdAtMillis];
   @override
   $LabelsTable get asDslTable => this;
   @override
@@ -246,11 +250,13 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    if (data.containsKey('created_at_millis')) {
+      context.handle(
+          _createdAtMillisMeta,
+          createdAtMillis.isAcceptableOrUnknown(
+              data['created_at_millis']!, _createdAtMillisMeta));
     } else if (isInserting) {
-      context.missing(_createdAtMeta);
+      context.missing(_createdAtMillisMeta);
     }
     return context;
   }
@@ -273,14 +279,14 @@ class Note extends DataClass implements Insertable<Note> {
   final int id;
   final String documentId;
   final String contents;
-  final int createdAt;
-  final int updatedAt;
+  final int createdAtMillis;
+  final int updatedAtMillis;
   Note(
       {required this.id,
       required this.documentId,
       required this.contents,
-      required this.createdAt,
-      required this.updatedAt});
+      required this.createdAtMillis,
+      required this.updatedAtMillis});
   factory Note.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -292,10 +298,10 @@ class Note extends DataClass implements Insertable<Note> {
           .mapFromDatabaseResponse(data['${effectivePrefix}document_id'])!,
       contents: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}contents'])!,
-      createdAt: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
-      updatedAt: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at'])!,
+      createdAtMillis: intType.mapFromDatabaseResponse(
+          data['${effectivePrefix}created_at_millis'])!,
+      updatedAtMillis: intType.mapFromDatabaseResponse(
+          data['${effectivePrefix}updated_at_millis'])!,
     );
   }
   @override
@@ -304,8 +310,8 @@ class Note extends DataClass implements Insertable<Note> {
     map['id'] = Variable<int>(id);
     map['document_id'] = Variable<String>(documentId);
     map['contents'] = Variable<String>(contents);
-    map['created_at'] = Variable<int>(createdAt);
-    map['updated_at'] = Variable<int>(updatedAt);
+    map['created_at_millis'] = Variable<int>(createdAtMillis);
+    map['updated_at_millis'] = Variable<int>(updatedAtMillis);
     return map;
   }
 
@@ -314,8 +320,8 @@ class Note extends DataClass implements Insertable<Note> {
       id: Value(id),
       documentId: Value(documentId),
       contents: Value(contents),
-      createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
+      createdAtMillis: Value(createdAtMillis),
+      updatedAtMillis: Value(updatedAtMillis),
     );
   }
 
@@ -326,8 +332,8 @@ class Note extends DataClass implements Insertable<Note> {
       id: serializer.fromJson<int>(json['id']),
       documentId: serializer.fromJson<String>(json['documentId']),
       contents: serializer.fromJson<String>(json['contents']),
-      createdAt: serializer.fromJson<int>(json['createdAt']),
-      updatedAt: serializer.fromJson<int>(json['updatedAt']),
+      createdAtMillis: serializer.fromJson<int>(json['createdAtMillis']),
+      updatedAtMillis: serializer.fromJson<int>(json['updatedAtMillis']),
     );
   }
   @override
@@ -337,8 +343,8 @@ class Note extends DataClass implements Insertable<Note> {
       'id': serializer.toJson<int>(id),
       'documentId': serializer.toJson<String>(documentId),
       'contents': serializer.toJson<String>(contents),
-      'createdAt': serializer.toJson<int>(createdAt),
-      'updatedAt': serializer.toJson<int>(updatedAt),
+      'createdAtMillis': serializer.toJson<int>(createdAtMillis),
+      'updatedAtMillis': serializer.toJson<int>(updatedAtMillis),
     };
   }
 
@@ -346,14 +352,14 @@ class Note extends DataClass implements Insertable<Note> {
           {int? id,
           String? documentId,
           String? contents,
-          int? createdAt,
-          int? updatedAt}) =>
+          int? createdAtMillis,
+          int? updatedAtMillis}) =>
       Note(
         id: id ?? this.id,
         documentId: documentId ?? this.documentId,
         contents: contents ?? this.contents,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
+        createdAtMillis: createdAtMillis ?? this.createdAtMillis,
+        updatedAtMillis: updatedAtMillis ?? this.updatedAtMillis,
       );
   @override
   String toString() {
@@ -361,8 +367,8 @@ class Note extends DataClass implements Insertable<Note> {
           ..write('id: $id, ')
           ..write('documentId: $documentId, ')
           ..write('contents: $contents, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('createdAtMillis: $createdAtMillis, ')
+          ..write('updatedAtMillis: $updatedAtMillis')
           ..write(')'))
         .toString();
   }
@@ -373,7 +379,7 @@ class Note extends DataClass implements Insertable<Note> {
       $mrjc(
           documentId.hashCode,
           $mrjc(contents.hashCode,
-              $mrjc(createdAt.hashCode, updatedAt.hashCode)))));
+              $mrjc(createdAtMillis.hashCode, updatedAtMillis.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -381,46 +387,46 @@ class Note extends DataClass implements Insertable<Note> {
           other.id == this.id &&
           other.documentId == this.documentId &&
           other.contents == this.contents &&
-          other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt);
+          other.createdAtMillis == this.createdAtMillis &&
+          other.updatedAtMillis == this.updatedAtMillis);
 }
 
 class NotesCompanion extends UpdateCompanion<Note> {
   final Value<int> id;
   final Value<String> documentId;
   final Value<String> contents;
-  final Value<int> createdAt;
-  final Value<int> updatedAt;
+  final Value<int> createdAtMillis;
+  final Value<int> updatedAtMillis;
   const NotesCompanion({
     this.id = const Value.absent(),
     this.documentId = const Value.absent(),
     this.contents = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
+    this.createdAtMillis = const Value.absent(),
+    this.updatedAtMillis = const Value.absent(),
   });
   NotesCompanion.insert({
     this.id = const Value.absent(),
     required String documentId,
     required String contents,
-    required int createdAt,
-    required int updatedAt,
+    required int createdAtMillis,
+    required int updatedAtMillis,
   })   : documentId = Value(documentId),
         contents = Value(contents),
-        createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+        createdAtMillis = Value(createdAtMillis),
+        updatedAtMillis = Value(updatedAtMillis);
   static Insertable<Note> custom({
     Expression<int>? id,
     Expression<String>? documentId,
     Expression<String>? contents,
-    Expression<int>? createdAt,
-    Expression<int>? updatedAt,
+    Expression<int>? createdAtMillis,
+    Expression<int>? updatedAtMillis,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (documentId != null) 'document_id': documentId,
       if (contents != null) 'contents': contents,
-      if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
+      if (createdAtMillis != null) 'created_at_millis': createdAtMillis,
+      if (updatedAtMillis != null) 'updated_at_millis': updatedAtMillis,
     });
   }
 
@@ -428,14 +434,14 @@ class NotesCompanion extends UpdateCompanion<Note> {
       {Value<int>? id,
       Value<String>? documentId,
       Value<String>? contents,
-      Value<int>? createdAt,
-      Value<int>? updatedAt}) {
+      Value<int>? createdAtMillis,
+      Value<int>? updatedAtMillis}) {
     return NotesCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
       contents: contents ?? this.contents,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
+      createdAtMillis: createdAtMillis ?? this.createdAtMillis,
+      updatedAtMillis: updatedAtMillis ?? this.updatedAtMillis,
     );
   }
 
@@ -451,11 +457,11 @@ class NotesCompanion extends UpdateCompanion<Note> {
     if (contents.present) {
       map['contents'] = Variable<String>(contents.value);
     }
-    if (createdAt.present) {
-      map['created_at'] = Variable<int>(createdAt.value);
+    if (createdAtMillis.present) {
+      map['created_at_millis'] = Variable<int>(createdAtMillis.value);
     }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<int>(updatedAt.value);
+    if (updatedAtMillis.present) {
+      map['updated_at_millis'] = Variable<int>(updatedAtMillis.value);
     }
     return map;
   }
@@ -466,8 +472,8 @@ class NotesCompanion extends UpdateCompanion<Note> {
           ..write('id: $id, ')
           ..write('documentId: $documentId, ')
           ..write('contents: $contents, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('createdAtMillis: $createdAtMillis, ')
+          ..write('updatedAtMillis: $updatedAtMillis')
           ..write(')'))
         .toString();
   }
@@ -504,23 +510,25 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     );
   }
 
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  final VerificationMeta _createdAtMillisMeta =
+      const VerificationMeta('createdAtMillis');
   @override
-  late final GeneratedIntColumn createdAt = _constructCreatedAt();
-  GeneratedIntColumn _constructCreatedAt() {
+  late final GeneratedIntColumn createdAtMillis = _constructCreatedAtMillis();
+  GeneratedIntColumn _constructCreatedAtMillis() {
     return GeneratedIntColumn(
-      'created_at',
+      'created_at_millis',
       $tableName,
       false,
     );
   }
 
-  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  final VerificationMeta _updatedAtMillisMeta =
+      const VerificationMeta('updatedAtMillis');
   @override
-  late final GeneratedIntColumn updatedAt = _constructUpdatedAt();
-  GeneratedIntColumn _constructUpdatedAt() {
+  late final GeneratedIntColumn updatedAtMillis = _constructUpdatedAtMillis();
+  GeneratedIntColumn _constructUpdatedAtMillis() {
     return GeneratedIntColumn(
-      'updated_at',
+      'updated_at_millis',
       $tableName,
       false,
     );
@@ -528,7 +536,7 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
 
   @override
   List<GeneratedColumn> get $columns =>
-      [id, documentId, contents, createdAt, updatedAt];
+      [id, documentId, contents, createdAtMillis, updatedAtMillis];
   @override
   $NotesTable get asDslTable => this;
   @override
@@ -557,17 +565,21 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     } else if (isInserting) {
       context.missing(_contentsMeta);
     }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    if (data.containsKey('created_at_millis')) {
+      context.handle(
+          _createdAtMillisMeta,
+          createdAtMillis.isAcceptableOrUnknown(
+              data['created_at_millis']!, _createdAtMillisMeta));
     } else if (isInserting) {
-      context.missing(_createdAtMeta);
+      context.missing(_createdAtMillisMeta);
     }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    if (data.containsKey('updated_at_millis')) {
+      context.handle(
+          _updatedAtMillisMeta,
+          updatedAtMillis.isAcceptableOrUnknown(
+              data['updated_at_millis']!, _updatedAtMillisMeta));
     } else if (isInserting) {
-      context.missing(_updatedAtMeta);
+      context.missing(_updatedAtMillisMeta);
     }
     return context;
   }

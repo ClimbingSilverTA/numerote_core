@@ -5,15 +5,15 @@ class Labels extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get documentId => text().customConstraint('UNIQUE')();
   TextColumn get name => text().withLength(max: 20)();
-  IntColumn get createdAt => integer()();
+  IntColumn get createdAtMillis => integer()();
 }
 
 class Notes extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get documentId => text().customConstraint('UNIQUE')();
   TextColumn get contents => text()();
-  IntColumn get createdAt => integer()();
-  IntColumn get updatedAt => integer()();
+  IntColumn get createdAtMillis => integer()();
+  IntColumn get updatedAtMillis => integer()();
 }
 
 @DataClassName('NoteEntry')
