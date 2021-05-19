@@ -10,18 +10,26 @@ void main() {
     });
 
     test('Check == is working correctly', () {
-      final firstLabel = Label(documentId: 'label_one', name: "Test Label");
-      final secondLabel = Label(documentId: 'label_one', name: "Test Label");
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final firstLabel = Label(
+        documentId: 'label_one',
+        name: "Test Label",
+        createdAtMillis: timestamp,
+      );
+      final secondLabel = Label(
+        documentId: 'label_one',
+        name: "Test Label",
+        createdAtMillis: timestamp,
+      );
       expect(firstLabel, secondLabel);
 
-      final thirdLabel = Label(documentId: "label_three", name: "Test Label");
+      final thirdLabel = Label(
+        documentId: "label_three",
+        name: "Test Label",
+        createdAtMillis: DateTime.now().millisecondsSinceEpoch,
+      );
       expect(firstLabel, isNot(thirdLabel));
       expect(secondLabel, isNot(thirdLabel));
-    });
-
-    test('Check hash code for coverage', () {
-      final label = Label.create(name: "読書");
-      expect(label.hashCode, label.documentId.hashCode);
     });
 
     test('Check that copyWith method is working correctly', () {
@@ -29,7 +37,10 @@ void main() {
       expect(original.copyWith(name: "ABC").name, "ABC");
       expect(
         original
-            .copyWith(createdAt: DateTime.now().add(const Duration(minutes: 1)))
+            .copyWith(
+                createdAtMillis: DateTime.now()
+                    .add(const Duration(minutes: 1))
+                    .millisecondsSinceEpoch)
             .createdAt,
         isNot(original.createdAt),
       );

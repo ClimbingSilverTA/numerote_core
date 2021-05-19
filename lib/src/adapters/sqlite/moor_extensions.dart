@@ -9,7 +9,7 @@ extension MoorLabelExt on Label {
     return core.Label(
       documentId: documentId,
       name: name,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(createdAt),
+      createdAtMillis: createdAt,
     );
   }
 }

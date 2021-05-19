@@ -15,7 +15,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  ## Models
   uuid: ^3.0.4  
+  freezed_annotation: ^0.14.2
 
   ## SQLite
   moor: ^4.2.1
@@ -27,8 +29,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^1.5.3  
+
+  freezed: ^0.14.2
   moor_generator: ^4.2.2
-  build_runner: ^2.0.2
+  build_runner: ^2.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

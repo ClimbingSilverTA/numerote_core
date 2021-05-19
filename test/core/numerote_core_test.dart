@@ -146,12 +146,16 @@ void main() {
           () async {
         final mathLabel = await core.labels.save(
           Label.create(name: "수학").copyWith(
-            createdAt: DateTime.now().add(const Duration(minutes: 10)),
+            createdAtMillis: DateTime.now()
+                .add(const Duration(minutes: 10))
+                .millisecondsSinceEpoch,
           ),
         );
         final englishLabel = await core.labels.save(
           Label.create(name: "영어").copyWith(
-            createdAt: DateTime.now().add(const Duration(minutes: 6)),
+            createdAtMillis: DateTime.now()
+                .add(const Duration(minutes: 6))
+                .millisecondsSinceEpoch,
           ),
         );
         final readingLabel = await core.labels.save(Label.create(name: "독서"));

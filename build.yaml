@@ -5,5 +5,7 @@ targets:
       # `pub run build_runner doctor` to check your config.
       moor_generator:
         generate_for:
-          # Example glob for only the Dart files under `lib/models`
           - lib/src/adapters/sqlite/moor_database.dart
+      freezed:
+        generate_for:
+          - lib/src/models/**.dart
