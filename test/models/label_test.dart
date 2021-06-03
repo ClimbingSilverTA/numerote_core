@@ -15,11 +15,13 @@ void main() {
         documentId: 'label_one',
         name: "Test Label",
         createdAtMillis: timestamp,
+        updatedAtMillis: timestamp,
       );
       final secondLabel = Label(
         documentId: 'label_one',
         name: "Test Label",
         createdAtMillis: timestamp,
+        updatedAtMillis: timestamp,
       );
       expect(firstLabel, secondLabel);
 
@@ -27,6 +29,7 @@ void main() {
         documentId: "label_three",
         name: "Test Label",
         createdAtMillis: DateTime.now().millisecondsSinceEpoch,
+        updatedAtMillis: timestamp,
       );
       expect(firstLabel, isNot(thirdLabel));
       expect(secondLabel, isNot(thirdLabel));

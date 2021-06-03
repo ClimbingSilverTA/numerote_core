@@ -19,11 +19,13 @@ class _$LabelTearOff {
   _Label call(
       {required String documentId,
       required String name,
-      required int createdAtMillis}) {
+      required int createdAtMillis,
+      required int updatedAtMillis}) {
     return _Label(
       documentId: documentId,
       name: name,
       createdAtMillis: createdAtMillis,
+      updatedAtMillis: updatedAtMillis,
     );
   }
 }
@@ -36,6 +38,7 @@ mixin _$Label {
   String get documentId => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get createdAtMillis => throw _privateConstructorUsedError;
+  int get updatedAtMillis => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LabelCopyWith<Label> get copyWith => throw _privateConstructorUsedError;
@@ -45,7 +48,11 @@ mixin _$Label {
 abstract class $LabelCopyWith<$Res> {
   factory $LabelCopyWith(Label value, $Res Function(Label) then) =
       _$LabelCopyWithImpl<$Res>;
-  $Res call({String documentId, String name, int createdAtMillis});
+  $Res call(
+      {String documentId,
+      String name,
+      int createdAtMillis,
+      int updatedAtMillis});
 }
 
 /// @nodoc
@@ -61,6 +68,7 @@ class _$LabelCopyWithImpl<$Res> implements $LabelCopyWith<$Res> {
     Object? documentId = freezed,
     Object? name = freezed,
     Object? createdAtMillis = freezed,
+    Object? updatedAtMillis = freezed,
   }) {
     return _then(_value.copyWith(
       documentId: documentId == freezed
@@ -75,6 +83,10 @@ class _$LabelCopyWithImpl<$Res> implements $LabelCopyWith<$Res> {
           ? _value.createdAtMillis
           : createdAtMillis // ignore: cast_nullable_to_non_nullable
               as int,
+      updatedAtMillis: updatedAtMillis == freezed
+          ? _value.updatedAtMillis
+          : updatedAtMillis // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -84,7 +96,11 @@ abstract class _$LabelCopyWith<$Res> implements $LabelCopyWith<$Res> {
   factory _$LabelCopyWith(_Label value, $Res Function(_Label) then) =
       __$LabelCopyWithImpl<$Res>;
   @override
-  $Res call({String documentId, String name, int createdAtMillis});
+  $Res call(
+      {String documentId,
+      String name,
+      int createdAtMillis,
+      int updatedAtMillis});
 }
 
 /// @nodoc
@@ -101,6 +117,7 @@ class __$LabelCopyWithImpl<$Res> extends _$LabelCopyWithImpl<$Res>
     Object? documentId = freezed,
     Object? name = freezed,
     Object? createdAtMillis = freezed,
+    Object? updatedAtMillis = freezed,
   }) {
     return _then(_Label(
       documentId: documentId == freezed
@@ -115,6 +132,10 @@ class __$LabelCopyWithImpl<$Res> extends _$LabelCopyWithImpl<$Res>
           ? _value.createdAtMillis
           : createdAtMillis // ignore: cast_nullable_to_non_nullable
               as int,
+      updatedAtMillis: updatedAtMillis == freezed
+          ? _value.updatedAtMillis
+          : updatedAtMillis // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -125,7 +146,8 @@ class _$_Label extends _Label {
   _$_Label(
       {required this.documentId,
       required this.name,
-      required this.createdAtMillis})
+      required this.createdAtMillis,
+      required this.updatedAtMillis})
       : super._();
 
   @override
@@ -134,10 +156,12 @@ class _$_Label extends _Label {
   final String name;
   @override
   final int createdAtMillis;
+  @override
+  final int updatedAtMillis;
 
   @override
   String toString() {
-    return 'Label(documentId: $documentId, name: $name, createdAtMillis: $createdAtMillis)';
+    return 'Label(documentId: $documentId, name: $name, createdAtMillis: $createdAtMillis, updatedAtMillis: $updatedAtMillis)';
   }
 
   @override
@@ -151,7 +175,10 @@ class _$_Label extends _Label {
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.createdAtMillis, createdAtMillis) ||
                 const DeepCollectionEquality()
-                    .equals(other.createdAtMillis, createdAtMillis)));
+                    .equals(other.createdAtMillis, createdAtMillis)) &&
+            (identical(other.updatedAtMillis, updatedAtMillis) ||
+                const DeepCollectionEquality()
+                    .equals(other.updatedAtMillis, updatedAtMillis)));
   }
 
   @override
@@ -159,7 +186,8 @@ class _$_Label extends _Label {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(documentId) ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(createdAtMillis);
+      const DeepCollectionEquality().hash(createdAtMillis) ^
+      const DeepCollectionEquality().hash(updatedAtMillis);
 
   @JsonKey(ignore: true)
   @override
@@ -171,7 +199,8 @@ abstract class _Label extends Label {
   factory _Label(
       {required String documentId,
       required String name,
-      required int createdAtMillis}) = _$_Label;
+      required int createdAtMillis,
+      required int updatedAtMillis}) = _$_Label;
   _Label._() : super._();
 
   @override
@@ -180,6 +209,8 @@ abstract class _Label extends Label {
   String get name => throw _privateConstructorUsedError;
   @override
   int get createdAtMillis => throw _privateConstructorUsedError;
+  @override
+  int get updatedAtMillis => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$LabelCopyWith<_Label> get copyWith => throw _privateConstructorUsedError;

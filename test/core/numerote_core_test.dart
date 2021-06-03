@@ -150,14 +150,14 @@ void main() {
           () async {
         final mathLabel = await core.labels.save(
           Label.create(name: "수학").copyWith(
-            createdAtMillis: DateTime.now()
+            updatedAtMillis: DateTime.now()
                 .add(const Duration(minutes: 10))
                 .millisecondsSinceEpoch,
           ),
         );
         final englishLabel = await core.labels.save(
           Label.create(name: "영어").copyWith(
-            createdAtMillis: DateTime.now()
+            updatedAtMillis: DateTime.now()
                 .add(const Duration(minutes: 6))
                 .millisecondsSinceEpoch,
           ),
