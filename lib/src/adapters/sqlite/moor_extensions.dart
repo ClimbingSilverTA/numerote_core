@@ -10,6 +10,7 @@ extension MoorLabelExt on Label {
       documentId: documentId,
       name: name,
       createdAtMillis: createdAtMillis,
+      updatedAtMillis: updatedAtMillis,
     );
   }
 }
@@ -20,6 +21,7 @@ extension LabelExt on core.Label {
       documentId: documentId,
       name: name,
       createdAtMillis: createdAt.millisecondsSinceEpoch,
+      updatedAtMillis: updatedAt.millisecondsSinceEpoch,
     );
   }
 }

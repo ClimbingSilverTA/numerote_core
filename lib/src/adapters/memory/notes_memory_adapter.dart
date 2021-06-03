@@ -57,7 +57,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
       note.labels.remove(label);
     }
 
-    _labels.sortByCreated();
+    _labels.sortByUpdated();
   }
 
   @override
@@ -65,7 +65,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     String lastId = "",
     int limit = 10,
   }) async {
-    _labels.sortByCreated();
+    _labels.sortByUpdated();
 
     final existingIndex = _labels.indexWhere(
       (element) => element.documentId == lastId,
@@ -79,7 +79,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   Future<Label?> createLabel(Label label) async {
     if (!_labels.contains(label)) {
       _labels.add(label);
-      _labels.sortByCreated();
+      _labels.sortByUpdated();
       return label;
     }
 
@@ -100,7 +100,7 @@ extension _SortNotes on List<Note> {
 }
 
 extension _SortLabels on List<Label> {
-  void sortByCreated() {
-    sort((b, a) => a.createdAt.compareTo(b.createdAt));
+  void sortByUpdated() {
+    sort((b, a) => a.updatedAt.compareTo(b.updatedAt));
   }
 }

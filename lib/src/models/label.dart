@@ -9,6 +9,7 @@ class Label with _$Label {
     required String documentId,
     required String name,
     required int createdAtMillis,
+    required int updatedAtMillis,
   }) = _Label;
 
   const Label._();
@@ -16,9 +17,16 @@ class Label with _$Label {
   DateTime get createdAt =>
       DateTime.fromMillisecondsSinceEpoch(createdAtMillis);
 
-  factory Label.create({required String name}) => Label(
-        name: name,
-        documentId: const Uuid().v4(),
-        createdAtMillis: DateTime.now().millisecondsSinceEpoch,
-      );
+  DateTime get updatedAt =>
+      DateTime.fromMillisecondsSinceEpoch(updatedAtMillis);
+
+  factory Label.create({required String name}) {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return Label(
+      name: name,
+      documentId: const Uuid().v4(),
+      createdAtMillis: timestamp,
+      updatedAtMillis: timestamp,
+    );
+  }
 }

@@ -12,11 +12,13 @@ class Label extends DataClass implements Insertable<Label> {
   final String documentId;
   final String name;
   final int createdAtMillis;
+  final int updatedAtMillis;
   Label(
       {required this.id,
       required this.documentId,
       required this.name,
-      required this.createdAtMillis});
+      required this.createdAtMillis,
+      required this.updatedAtMillis});
   factory Label.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -29,6 +31,8 @@ class Label extends DataClass implements Insertable<Label> {
       name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       createdAtMillis: intType.mapFromDatabaseResponse(
           data['${effectivePrefix}created_at_millis'])!,
+      updatedAtMillis: intType.mapFromDatabaseResponse(
+          data['${effectivePrefix}updated_at_millis'])!,
     );
   }
   @override
@@ -38,6 +42,7 @@ class Label extends DataClass implements Insertable<Label> {
     map['document_id'] = Variable<String>(documentId);
     map['name'] = Variable<String>(name);
     map['created_at_millis'] = Variable<int>(createdAtMillis);
+    map['updated_at_millis'] = Variable<int>(updatedAtMillis);
     return map;
   }
 
@@ -47,6 +52,7 @@ class Label extends DataClass implements Insertable<Label> {
       documentId: Value(documentId),
       name: Value(name),
       createdAtMillis: Value(createdAtMillis),
+      updatedAtMillis: Value(updatedAtMillis),
     );
   }
 
@@ -58,6 +64,7 @@ class Label extends DataClass implements Insertable<Label> {
       documentId: serializer.fromJson<String>(json['documentId']),
       name: serializer.fromJson<String>(json['name']),
       createdAtMillis: serializer.fromJson<int>(json['createdAtMillis']),
+      updatedAtMillis: serializer.fromJson<int>(json['updatedAtMillis']),
     );
   }
   @override
@@ -68,16 +75,22 @@ class Label extends DataClass implements Insertable<Label> {
       'documentId': serializer.toJson<String>(documentId),
       'name': serializer.toJson<String>(name),
       'createdAtMillis': serializer.toJson<int>(createdAtMillis),
+      'updatedAtMillis': serializer.toJson<int>(updatedAtMillis),
     };
   }
 
   Label copyWith(
-          {int? id, String? documentId, String? name, int? createdAtMillis}) =>
+          {int? id,
+          String? documentId,
+          String? name,
+          int? createdAtMillis,
+          int? updatedAtMillis}) =>
       Label(
         id: id ?? this.id,
         documentId: documentId ?? this.documentId,
         name: name ?? this.name,
         createdAtMillis: createdAtMillis ?? this.createdAtMillis,
+        updatedAtMillis: updatedAtMillis ?? this.updatedAtMillis,
       );
   @override
   String toString() {
@@ -85,7 +98,8 @@ class Label extends DataClass implements Insertable<Label> {
           ..write('id: $id, ')
           ..write('documentId: $documentId, ')
           ..write('name: $name, ')
-          ..write('createdAtMillis: $createdAtMillis')
+          ..write('createdAtMillis: $createdAtMillis, ')
+          ..write('updatedAtMillis: $updatedAtMillis')
           ..write(')'))
         .toString();
   }
@@ -93,8 +107,10 @@ class Label extends DataClass implements Insertable<Label> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
-      $mrjc(documentId.hashCode,
-          $mrjc(name.hashCode, createdAtMillis.hashCode))));
+      $mrjc(
+          documentId.hashCode,
+          $mrjc(name.hashCode,
+              $mrjc(createdAtMillis.hashCode, updatedAtMillis.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -102,7 +118,8 @@ class Label extends DataClass implements Insertable<Label> {
           other.id == this.id &&
           other.documentId == this.documentId &&
           other.name == this.name &&
-          other.createdAtMillis == this.createdAtMillis);
+          other.createdAtMillis == this.createdAtMillis &&
+          other.updatedAtMillis == this.updatedAtMillis);
 }
 
 class LabelsCompanion extends UpdateCompanion<Label> {
@@ -110,31 +127,37 @@ class LabelsCompanion extends UpdateCompanion<Label> {
   final Value<String> documentId;
   final Value<String> name;
   final Value<int> createdAtMillis;
+  final Value<int> updatedAtMillis;
   const LabelsCompanion({
     this.id = const Value.absent(),
     this.documentId = const Value.absent(),
     this.name = const Value.absent(),
     this.createdAtMillis = const Value.absent(),
+    this.updatedAtMillis = const Value.absent(),
   });
   LabelsCompanion.insert({
     this.id = const Value.absent(),
     required String documentId,
     required String name,
     required int createdAtMillis,
+    required int updatedAtMillis,
   })   : documentId = Value(documentId),
         name = Value(name),
-        createdAtMillis = Value(createdAtMillis);
+        createdAtMillis = Value(createdAtMillis),
+        updatedAtMillis = Value(updatedAtMillis);
   static Insertable<Label> custom({
     Expression<int>? id,
     Expression<String>? documentId,
     Expression<String>? name,
     Expression<int>? createdAtMillis,
+    Expression<int>? updatedAtMillis,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (documentId != null) 'document_id': documentId,
       if (name != null) 'name': name,
       if (createdAtMillis != null) 'created_at_millis': createdAtMillis,
+      if (updatedAtMillis != null) 'updated_at_millis': updatedAtMillis,
     });
   }
 
@@ -142,12 +165,14 @@ class LabelsCompanion extends UpdateCompanion<Label> {
       {Value<int>? id,
       Value<String>? documentId,
       Value<String>? name,
-      Value<int>? createdAtMillis}) {
+      Value<int>? createdAtMillis,
+      Value<int>? updatedAtMillis}) {
     return LabelsCompanion(
       id: id ?? this.id,
       documentId: documentId ?? this.documentId,
       name: name ?? this.name,
       createdAtMillis: createdAtMillis ?? this.createdAtMillis,
+      updatedAtMillis: updatedAtMillis ?? this.updatedAtMillis,
     );
   }
 
@@ -166,6 +191,9 @@ class LabelsCompanion extends UpdateCompanion<Label> {
     if (createdAtMillis.present) {
       map['created_at_millis'] = Variable<int>(createdAtMillis.value);
     }
+    if (updatedAtMillis.present) {
+      map['updated_at_millis'] = Variable<int>(updatedAtMillis.value);
+    }
     return map;
   }
 
@@ -175,7 +203,8 @@ class LabelsCompanion extends UpdateCompanion<Label> {
           ..write('id: $id, ')
           ..write('documentId: $documentId, ')
           ..write('name: $name, ')
-          ..write('createdAtMillis: $createdAtMillis')
+          ..write('createdAtMillis: $createdAtMillis, ')
+          ..write('updatedAtMillis: $updatedAtMillis')
           ..write(')'))
         .toString();
   }
@@ -220,8 +249,21 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
     );
   }
 
+  final VerificationMeta _updatedAtMillisMeta =
+      const VerificationMeta('updatedAtMillis');
   @override
-  List<GeneratedColumn> get $columns => [id, documentId, name, createdAtMillis];
+  late final GeneratedIntColumn updatedAtMillis = _constructUpdatedAtMillis();
+  GeneratedIntColumn _constructUpdatedAtMillis() {
+    return GeneratedIntColumn(
+      'updated_at_millis',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, documentId, name, createdAtMillis, updatedAtMillis];
   @override
   $LabelsTable get asDslTable => this;
   @override
@@ -257,6 +299,14 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
               data['created_at_millis']!, _createdAtMillisMeta));
     } else if (isInserting) {
       context.missing(_createdAtMillisMeta);
+    }
+    if (data.containsKey('updated_at_millis')) {
+      context.handle(
+          _updatedAtMillisMeta,
+          updatedAtMillis.isAcceptableOrUnknown(
+              data['updated_at_millis']!, _updatedAtMillisMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMillisMeta);
     }
     return context;
   }

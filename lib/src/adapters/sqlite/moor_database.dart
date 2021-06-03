@@ -50,7 +50,7 @@ class MoorDatabase extends _$MoorDatabase {
     var query = select(labels)
       ..orderBy([
         (t) =>
-            OrderingTerm(expression: t.createdAtMillis, mode: OrderingMode.desc)
+            OrderingTerm(expression: t.updatedAtMillis, mode: OrderingMode.desc)
       ]);
 
     if (lastId.isNotEmpty) {
@@ -58,8 +58,8 @@ class MoorDatabase extends _$MoorDatabase {
       if (existingLabel != null) {
         query = query
           ..where(
-            (l) => l.createdAtMillis
-                .isSmallerThanValue(existingLabel.createdAtMillis),
+            (l) => l.updatedAtMillis
+                .isSmallerThanValue(existingLabel.updatedAtMillis),
           );
       }
     }

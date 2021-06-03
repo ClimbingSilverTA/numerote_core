@@ -6,6 +6,7 @@ class Labels extends Table {
   TextColumn get documentId => text().customConstraint('UNIQUE')();
   TextColumn get name => text().withLength(max: 20)();
   IntColumn get createdAtMillis => integer()();
+  IntColumn get updatedAtMillis => integer()();
 }
 
 class Notes extends Table {
