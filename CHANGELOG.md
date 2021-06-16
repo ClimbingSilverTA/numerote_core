@@ -1,3 +1,13 @@
+## v1.1.0
+- Implement `saveAll` method for `Note` and `Label`.
+
+## v1.0.0
+- Upgraded to first stable release.
+
+## v0.5.0
+- Added updatedAtMillis field to `Label` class.
+- Upgraded dependencies.
+
 ## v0.4.0
 - Converted `Note` and `Label` classes to use `freezed`.
 - Added 'millis' suffix to Moor columns that are for timestamps.
