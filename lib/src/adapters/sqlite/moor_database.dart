@@ -35,8 +35,17 @@ class MoorDatabase extends _$MoorDatabase {
       (select(labels)..where((l) => l.documentId.equals(documentId)))
           .getSingleOrNull();
 
-  Future<int> saveLabel(core.Label label) async =>
-      into(labels).insert(label.toCompanion(), mode: InsertMode.replace);
+  Future<int> saveLabel(core.Label coreLabel) async =>
+      into(labels).insert(coreLabel.toCompanion(), mode: InsertMode.replace);
+
+  Future<void> saveLabels(List<core.Label> coreLabels) async {
+    await transaction(() async {
+      for (final coreLabel in coreLabels) {
+        await into(labels)
+            .insert(coreLabel.toCompanion(), mode: InsertMode.replace);
+      }
+    });
+  }
 
   Future<void> deleteLabel({required String documentId}) async {
     await (delete(labels)..where((l) => l.documentId.equals(documentId))).go();
@@ -127,6 +136,28 @@ class MoorDatabase extends _$MoorDatabase {
 
     final newRecord = await _findNote(documentId: coreNote.documentId);
     return newRecord?.id ?? -1;
+  }
+
+  Future<void> saveNotes(List<core.Note> coreNotes) async {
+    await transaction(() async {
+      for (final coreNote in coreNotes) {
+        final note = coreNote.toCompanion();
+        final labels = coreNote.labels.map((l) => l.toCompanion()).toList();
+        await into(notes).insert(note, mode: InsertMode.replace);
+        await (delete(noteEntries)
+              ..where((it) => it.note.equals(note.documentId.value)))
+            .go();
+
+        for (final item in labels) {
+          await into(noteEntries).insert(
+            NoteEntry(
+              note: note.documentId.value,
+              label: item.documentId.value,
+            ),
+          );
+        }
+      }
+    });
   }
 
   Future<void> deleteNote({required String documentId}) async {

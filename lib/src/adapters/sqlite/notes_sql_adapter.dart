@@ -13,10 +13,14 @@ class NotesSQLAdapter extends NotesDataAdapter {
   final moor.MoorDatabase _database;
 
   @override
-  Future<Label?> createLabel(Label label) async {
+  Future<Label?> saveLabel(Label label) async {
     final result = await _database.saveLabel(label);
     return result > -1 ? label : null;
   }
+
+  @override
+  Future<void> saveLabels(List<Label> labels) async =>
+      _database.saveLabels(labels);
 
   @override
   Future<void> deleteLabel(Label label) async =>
@@ -51,6 +55,9 @@ class NotesSQLAdapter extends NotesDataAdapter {
     final result = await _database.saveNote(note);
     return result > -1 ? note : null;
   }
+
+  @override
+  Future<void> saveNotes(List<Note> notes) async => _database.saveNotes(notes);
 
   @override
   Future<void> nuke() async => _database.deleteAll();

@@ -23,6 +23,13 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   }
 
   @override
+  Future<void> saveNotes(List<Note> notes) async {
+    for (final note in notes) {
+      await saveNote(note);
+    }
+  }
+
+  @override
   Future<void> deleteNote(Note note) async {
     _notes.removeWhere((element) => element.documentId == note.documentId);
     _notes.sortByUpdated();
@@ -76,14 +83,26 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   }
 
   @override
-  Future<Label?> createLabel(Label label) async {
-    if (!_labels.contains(label)) {
+  Future<Label?> saveLabel(Label label) async {
+    final index = _labels.indexWhere(
+      (element) => element.documentId == label.documentId,
+    );
+
+    if (index > -1) {
+      _labels[index] = label;
+    } else {
       _labels.add(label);
-      _labels.sortByUpdated();
-      return label;
     }
 
-    return null;
+    _labels.sortByUpdated();
+    return label;
+  }
+
+  @override
+  Future<void> saveLabels(List<Label> labels) async {
+    for (final label in labels) {
+      await saveLabel(label);
+    }
   }
 
   @override

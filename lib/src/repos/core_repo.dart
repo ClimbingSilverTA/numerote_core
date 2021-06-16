@@ -10,10 +10,18 @@ class CoreRepo<R> {
     if (item is Note) {
       return await _adapter.saveNote(item) as R?;
     } else if (item is Label) {
-      return await _adapter.createLabel(item) as R?;
+      return await _adapter.saveLabel(item) as R?;
     }
 
     return null;
+  }
+
+  Future<void> saveAll(List<R> items) async {
+    if (items is List<Note>) {
+      return _adapter.saveNotes(items as List<Note>);
+    } else if (items is List<Label>) {
+      return _adapter.saveLabels(items as List<Label>);
+    }
   }
 
   Future<void> delete(R item) async {
