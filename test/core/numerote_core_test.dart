@@ -43,6 +43,24 @@ void main() {
         expect(await core.notes.find(), isEmpty);
       });
 
+      test('Check that multiple notes can be saved simultaneously', () async {
+        expect(await core.notes.find(), isEmpty);
+
+        final notes = [
+          Note.create(contents: "Note 1"),
+          Note.create(contents: "Note 2"),
+          Note.create(contents: "Note 3")
+        ];
+
+        await core.notes.saveAll(notes);
+        expect(await core.notes.find(), isNotEmpty);
+
+        await core.notes.find().then((value) async {
+          expect(value.length, 3);
+          expect(value, containsAll(notes));
+        });
+      });
+
       test('Check that a Label can be created/deleted', () async {
         expect(await core.notes.find(), isEmpty);
 

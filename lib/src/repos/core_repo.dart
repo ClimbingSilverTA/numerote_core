@@ -16,6 +16,10 @@ class CoreRepo<R> {
     return null;
   }
 
+  Future<void> saveAll(List<R> items) async {
+    if (items is List<Note>) return _adapter.saveNotes(items as List<Note>);
+  }
+
   Future<void> delete(R item) async {
     if (item is Note) {
       return _adapter.deleteNote(item);

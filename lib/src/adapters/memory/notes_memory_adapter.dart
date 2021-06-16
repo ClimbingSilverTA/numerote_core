@@ -23,6 +23,13 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   }
 
   @override
+  Future<void> saveNotes(List<Note> notes) async {
+    for (final note in notes) {
+      await saveNote(note);
+    }
+  }
+
+  @override
   Future<void> deleteNote(Note note) async {
     _notes.removeWhere((element) => element.documentId == note.documentId);
     _notes.sortByUpdated();

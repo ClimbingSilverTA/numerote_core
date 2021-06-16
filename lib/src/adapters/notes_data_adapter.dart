@@ -8,6 +8,7 @@ abstract class NotesDataAdapter {
     Label? label,
   });
   Future<Note?> saveNote(Note note);
+  Future<void> saveNotes(List<Note> notes);
   Future<void> deleteNote(Note note);
 
   Future<List<Label>> getLabels({

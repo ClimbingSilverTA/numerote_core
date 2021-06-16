@@ -53,5 +53,8 @@ class NotesSQLAdapter extends NotesDataAdapter {
   }
 
   @override
+  Future<void> saveNotes(List<Note> notes) async => _database.saveNotes(notes);
+
+  @override
   Future<void> nuke() async => _database.deleteAll();
 }

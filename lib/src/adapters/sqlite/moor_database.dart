@@ -129,6 +129,28 @@ class MoorDatabase extends _$MoorDatabase {
     return newRecord?.id ?? -1;
   }
 
+  Future<void> saveNotes(List<core.Note> coreNotes) async {
+    await transaction(() async {
+      for (final coreNote in coreNotes) {
+        final note = coreNote.toCompanion();
+        final labels = coreNote.labels.map((l) => l.toCompanion()).toList();
+        await into(notes).insert(note, mode: InsertMode.replace);
+        await (delete(noteEntries)
+              ..where((it) => it.note.equals(note.documentId.value)))
+            .go();
+
+        for (final item in labels) {
+          await into(noteEntries).insert(
+            NoteEntry(
+              note: note.documentId.value,
+              label: item.documentId.value,
+            ),
+          );
+        }
+      }
+    });
+  }
+
   Future<void> deleteNote({required String documentId}) async {
     return transaction(() async {
       await (delete(noteEntries)..where((it) => it.note.equals(documentId)))
