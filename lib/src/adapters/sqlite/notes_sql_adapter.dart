@@ -13,7 +13,7 @@ class NotesSQLAdapter extends NotesDataAdapter {
   final moor.MoorDatabase _database;
 
   @override
-  Future<Label?> createLabel(Label label) async {
+  Future<Label?> saveLabel(Label label) async {
     final result = await _database.saveLabel(label);
     return result > -1 ? label : null;
   }

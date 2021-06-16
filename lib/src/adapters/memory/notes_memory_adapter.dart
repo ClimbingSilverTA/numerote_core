@@ -83,7 +83,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   }
 
   @override
-  Future<Label?> createLabel(Label label) async {
+  Future<Label?> saveLabel(Label label) async {
     if (!_labels.contains(label)) {
       _labels.add(label);
       _labels.sortByUpdated();

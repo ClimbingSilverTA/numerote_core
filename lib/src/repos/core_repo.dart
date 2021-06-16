@@ -10,7 +10,7 @@ class CoreRepo<R> {
     if (item is Note) {
       return await _adapter.saveNote(item) as R?;
     } else if (item is Label) {
-      return await _adapter.createLabel(item) as R?;
+      return await _adapter.saveLabel(item) as R?;
     }
 
     return null;
