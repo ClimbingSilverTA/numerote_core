@@ -84,13 +84,18 @@ class NotesMemoryAdapter extends NotesDataAdapter {
 
   @override
   Future<Label?> saveLabel(Label label) async {
-    if (!_labels.contains(label)) {
+    final index = _notes.indexWhere(
+      (element) => element.documentId == label.documentId,
+    );
+
+    if (index > -1) {
+      _labels[index] = label;
+    } else {
       _labels.add(label);
-      _labels.sortByUpdated();
-      return label;
     }
 
-    return null;
+    _labels.sortByUpdated();
+    return label;
   }
 
   @override
