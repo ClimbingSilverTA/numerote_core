@@ -56,7 +56,7 @@ void main() {
         expect(await core.notes.find(), isNotEmpty);
 
         await core.notes.find().then((value) async {
-          expect(value.length, 3);
+          expect(value, hasLength(3));
           expect(value, containsAll(notes));
         });
       });
@@ -92,6 +92,24 @@ void main() {
         });
 
         expect(await core.labels.find(), isEmpty);
+      });
+
+      test('Check that multiple labels can be saved simultaneously', () async {
+        expect(await core.labels.find(), isEmpty);
+
+        final labels = [
+          Label.create(name: "Label 1"),
+          Label.create(name: "Label 2"),
+          Label.create(name: "Label 3"),
+        ];
+
+        await core.labels.saveAll(labels);
+        expect(await core.labels.find(), isNotEmpty);
+
+        await core.labels.find().then((value) async {
+          expect(value, hasLength(3));
+          expect(value, containsAll(labels));
+        });
       });
 
       test('Ensure that Notes can be filtered via a Label', () async {

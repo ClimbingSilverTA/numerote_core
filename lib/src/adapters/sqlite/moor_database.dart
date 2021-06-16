@@ -35,8 +35,17 @@ class MoorDatabase extends _$MoorDatabase {
       (select(labels)..where((l) => l.documentId.equals(documentId)))
           .getSingleOrNull();
 
-  Future<int> saveLabel(core.Label label) async =>
-      into(labels).insert(label.toCompanion(), mode: InsertMode.replace);
+  Future<int> saveLabel(core.Label coreLabel) async =>
+      into(labels).insert(coreLabel.toCompanion(), mode: InsertMode.replace);
+
+  Future<void> saveLabels(List<core.Label> coreLabels) async {
+    await transaction(() async {
+      for (final coreLabel in coreLabels) {
+        await into(labels)
+            .insert(coreLabel.toCompanion(), mode: InsertMode.replace);
+      }
+    });
+  }
 
   Future<void> deleteLabel({required String documentId}) async {
     await (delete(labels)..where((l) => l.documentId.equals(documentId))).go();

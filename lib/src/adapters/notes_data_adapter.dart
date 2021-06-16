@@ -16,6 +16,7 @@ abstract class NotesDataAdapter {
     int limit = 10,
   });
   Future<Label?> saveLabel(Label label);
+  Future<void> saveLabels(List<Label> labels);
   Future<void> deleteLabel(Label label);
 
   Future<void> nuke();

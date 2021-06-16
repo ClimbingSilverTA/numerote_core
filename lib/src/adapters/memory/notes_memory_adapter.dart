@@ -99,6 +99,13 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   }
 
   @override
+  Future<void> saveLabels(List<Label> labels) async {
+    for (final label in labels) {
+      await saveLabel(label);
+    }
+  }
+
+  @override
   Future<void> nuke() async {
     _labels.clear();
     _notes.clear();

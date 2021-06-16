@@ -19,6 +19,10 @@ class NotesSQLAdapter extends NotesDataAdapter {
   }
 
   @override
+  Future<void> saveLabels(List<Label> labels) async =>
+      _database.saveLabels(labels);
+
+  @override
   Future<void> deleteLabel(Label label) async =>
       _database.deleteLabel(documentId: label.documentId);
 
