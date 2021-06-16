@@ -84,7 +84,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
 
   @override
   Future<Label?> saveLabel(Label label) async {
-    final index = _notes.indexWhere(
+    final index = _labels.indexWhere(
       (element) => element.documentId == label.documentId,
     );
 

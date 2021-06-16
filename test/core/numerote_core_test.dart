@@ -61,18 +61,36 @@ void main() {
         });
       });
 
-      test('Check that a Label can be created/deleted', () async {
+      test('Check that a Label can be edited/created/deleted', () async {
         expect(await core.notes.find(), isEmpty);
 
         final label = Label.create(name: "つぶやき");
         await core.labels.save(label);
 
-        final savedLabels = await core.labels.find();
-        expect(savedLabels, isNotEmpty);
-        expect(savedLabels.first, label);
-        expect(savedLabels.first.name, label.name);
+        await core.labels.find().then((value) {
+          expect(value, hasLength(1));
+          expect(value.first, label);
+          expect(value.first.name, label.name);
+          expect(value.first.updatedAtMillis, label.updatedAtMillis);
+        });
 
-        await core.labels.delete(label);
+        final timestamp = DateTime.now().millisecondsSinceEpoch;
+        await core.labels.find().then((value) async {
+          await core.labels.save(
+            value.first.copyWith(
+              updatedAtMillis: timestamp,
+            ),
+          );
+        });
+
+        await core.labels.find().then((value) async {
+          expect(value, hasLength(1));
+          expect(value.first.name, label.name);
+          expect(value.first.updatedAt, isNot(label.updatedAt));
+          expect(value.first.updatedAtMillis, timestamp);
+          await core.labels.delete(value.first);
+        });
+
         expect(await core.labels.find(), isEmpty);
       });
 
