@@ -56,18 +56,23 @@ class MoorDatabase extends _$MoorDatabase {
     int limit = 10,
   }) async {
     var query = select(labels)
-      ..orderBy([
-        (t) =>
-            OrderingTerm(expression: t.updatedAtMillis, mode: OrderingMode.desc)
-      ]);
+      ..orderBy(
+        [
+          (t) => OrderingTerm(
+              expression: t.updatedAtMillis, mode: OrderingMode.desc),
+          (t) =>
+              OrderingTerm(expression: t.documentId, mode: OrderingMode.desc),
+        ],
+      );
 
     if (lastId.isNotEmpty) {
       final existingLabel = await _findLabel(documentId: lastId);
       if (existingLabel != null) {
+        final isNextRow = CustomExpression<bool>(
+            "(updated_at_millis, document_id) < (${existingLabel.updatedAtMillis}, '${existingLabel.documentId}')");
         query = query
           ..where(
-            (l) => l.updatedAtMillis
-                .isSmallerThanValue(existingLabel.updatedAtMillis),
+            (l) => isNextRow,
           );
       }
     }
@@ -83,17 +88,19 @@ class MoorDatabase extends _$MoorDatabase {
   }) async {
     var query = select(notes)
       ..orderBy([
-        (t) =>
-            OrderingTerm(expression: t.updatedAtMillis, mode: OrderingMode.desc)
+        (t) => OrderingTerm(
+            expression: t.updatedAtMillis, mode: OrderingMode.desc),
+        (t) => OrderingTerm(expression: t.documentId, mode: OrderingMode.desc),
       ]);
 
     if (lastId.isNotEmpty) {
       final existingNote = await _findNote(documentId: lastId);
       if (existingNote != null) {
+        final isNextRow = CustomExpression<bool>(
+            "(updated_at_millis, document_id) < (${existingNote.updatedAtMillis}, '${existingNote.documentId}')");
         query = query
           ..where(
-            (n) => n.updatedAtMillis
-                .isSmallerThanValue(existingNote.updatedAtMillis),
+            (n) => isNextRow,
           );
       }
     }
