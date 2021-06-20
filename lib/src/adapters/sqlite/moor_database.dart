@@ -88,17 +88,19 @@ class MoorDatabase extends _$MoorDatabase {
   }) async {
     var query = select(notes)
       ..orderBy([
-        (t) =>
-            OrderingTerm(expression: t.updatedAtMillis, mode: OrderingMode.desc)
+        (t) => OrderingTerm(
+            expression: t.updatedAtMillis, mode: OrderingMode.desc),
+        (t) => OrderingTerm(expression: t.documentId, mode: OrderingMode.desc),
       ]);
 
     if (lastId.isNotEmpty) {
       final existingNote = await _findNote(documentId: lastId);
       if (existingNote != null) {
+        final isNextRow = CustomExpression<bool>(
+            "(updated_at_millis, document_id) < (${existingNote.updatedAtMillis}, '${existingNote.documentId}')");
         query = query
           ..where(
-            (n) => n.updatedAtMillis
-                .isSmallerThanValue(existingNote.updatedAtMillis),
+            (n) => isNextRow,
           );
       }
     }

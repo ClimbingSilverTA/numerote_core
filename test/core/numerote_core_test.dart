@@ -145,37 +145,55 @@ void main() {
 
       test('Ensure that notes are being ordered by updatedAt, can be skipped',
           () async {
-        var note1 = await core.notes.save(Note.create(contents: "Note A"));
-        var note2 = await core.notes.save(Note.create(contents: "Note B"));
-        final note3 = await core.notes.save(Note.create(contents: "Note C"));
-
-        note1 = await core.notes.save(
-          note1!.copyWith(
+        final notes = [
+          Note.create(contents: "Note A").copyWith(
             updatedAtMillis: DateTime.now()
                 .add(const Duration(hours: 1))
                 .millisecondsSinceEpoch,
           ),
-        );
-
-        note2 = await core.notes.save(
-          note2!.copyWith(
+          Note.create(contents: "Note B").copyWith(
             updatedAtMillis: DateTime.now()
                 .add(const Duration(minutes: 30))
                 .millisecondsSinceEpoch,
           ),
-        );
+          Note.create(contents: "Note C"),
+        ];
 
-        expect(note1, isNotNull);
-        expect(note2, isNotNull);
+        await core.notes.saveAll(notes);
 
-        var notes = await core.notes.find();
-        expect(notes, hasLength(3));
-        expect(notes.first, note1);
-        expect(notes.last, note3);
+        await core.notes.find().then((value) {
+          expect(value, hasLength(3));
+          expect(value.first, notes.first);
+          expect(value.last, notes.last);
+        });
 
-        notes = await core.notes.find(lastId: note2!.documentId);
-        expect(notes, hasLength(1));
-        expect(notes.first, note3);
+        await core.notes.find(lastId: notes[1].documentId).then((value) {
+          expect(value, hasLength(1));
+          expect(value.first, notes.last);
+        });
+      });
+
+      test(
+          'Ensure that notes are being ordered by updatedAt, can be skipped(with same timestamp values)',
+          () async {
+        final updatedTimestamp = DateTime.now().millisecondsSinceEpoch;
+
+        final notes = [
+          for (var i = 0; i < 10; i++)
+            Note.create(contents: "Note $i").copyWith(
+              updatedAtMillis: updatedTimestamp,
+            )
+        ];
+
+        await core.notes.saveAll(notes);
+
+        await core.notes.find().then((v1) async {
+          expect(v1, hasLength(10));
+          await core.notes.find(lastId: v1[8].documentId).then((v2) {
+            expect(v2, hasLength(1));
+            expect(v2.first, v1.last);
+          });
+        });
       });
 
       test('Ensure that limit/label for Note is being enforced', () async {
