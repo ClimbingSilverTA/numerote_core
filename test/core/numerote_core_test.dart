@@ -229,6 +229,37 @@ void main() {
         labels = await core.labels.find(limit: 2);
         expect(labels, hasLength(2));
       });
+
+      test(
+          'Ensure skipping/pagination is enforced properly for Labels(when values are the same)',
+          () async {
+        final updateTimestamp = DateTime.now().millisecondsSinceEpoch;
+        final labels = [
+          Label.create(name: 'Mock1').copyWith(
+            updatedAtMillis: updateTimestamp,
+          ),
+          Label.create(name: 'Mock2').copyWith(
+            updatedAtMillis: updateTimestamp,
+          ),
+          Label.create(name: 'Mock3').copyWith(
+            updatedAtMillis: updateTimestamp,
+          ),
+          Label.create(name: 'Mock4').copyWith(
+            updatedAtMillis: updateTimestamp,
+          ),
+        ];
+
+        await core.labels.saveAll(labels);
+        await core.labels.find().then((v1) async {
+          expect(v1, containsAll(labels));
+          expect(v1, hasLength(4));
+
+          await core.labels.find(lastId: v1[1].documentId).then((v2) {
+            expect(v2, hasLength(2));
+            expect(v2, containsAll([v1[2], v1[3]]));
+          });
+        });
+      });
     });
   });
 }

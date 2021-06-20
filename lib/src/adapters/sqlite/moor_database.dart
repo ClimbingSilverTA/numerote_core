@@ -56,18 +56,23 @@ class MoorDatabase extends _$MoorDatabase {
     int limit = 10,
   }) async {
     var query = select(labels)
-      ..orderBy([
-        (t) =>
-            OrderingTerm(expression: t.updatedAtMillis, mode: OrderingMode.desc)
-      ]);
+      ..orderBy(
+        [
+          (t) => OrderingTerm(
+              expression: t.updatedAtMillis, mode: OrderingMode.desc),
+          (t) =>
+              OrderingTerm(expression: t.documentId, mode: OrderingMode.desc),
+        ],
+      );
 
     if (lastId.isNotEmpty) {
       final existingLabel = await _findLabel(documentId: lastId);
       if (existingLabel != null) {
+        final isNextRow = CustomExpression<bool>(
+            "(updated_at_millis, document_id) < (${existingLabel.updatedAtMillis}, '${existingLabel.documentId}')");
         query = query
           ..where(
-            (l) => l.updatedAtMillis
-                .isSmallerThanValue(existingLabel.updatedAtMillis),
+            (l) => isNextRow,
           );
       }
     }
