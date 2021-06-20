@@ -1,3 +1,6 @@
+## v1.2.0
+- Fixed pagination issues(unintended skipping etc.).
+
 ## v1.1.0
 - Implement `saveAll` method for `Note` and `Label`.
 
