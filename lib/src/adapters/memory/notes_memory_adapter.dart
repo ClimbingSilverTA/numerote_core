@@ -39,7 +39,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
   Future<List<Note>> getNotes({
     String lastId = "",
     int limit = 10,
-    Label? label,
+    String? labelId,
   }) async {
     _notes.sortByUpdated();
     final existingIndex = _notes.indexWhere(
@@ -48,8 +48,13 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     final index = existingIndex == -1 ? 0 : existingIndex + 1;
     return _notes
         .where((element) {
-          if (label == null) return true;
-          return element.labels.contains(label);
+          if (labelId == null) return true;
+
+          for (final label in element.labels) {
+            if (label.documentId == labelId) return true;
+          }
+
+          return false;
         })
         .skip(index)
         .take(limit)

@@ -84,7 +84,7 @@ class MoorDatabase extends _$MoorDatabase {
   Future<List<core.Note>> getNotes({
     String lastId = "",
     int limit = 10,
-    core.Label? label,
+    String? labelId,
   }) async {
     var query = select(notes)
       ..orderBy([
@@ -105,10 +105,10 @@ class MoorDatabase extends _$MoorDatabase {
       }
     }
 
-    if (label != null) {
+    if (labelId != null) {
       final searchIds = await (selectOnly(noteEntries)
             ..addColumns([noteEntries.note])
-            ..where(noteEntries.label.equals(label.documentId)))
+            ..where(noteEntries.label.equals(labelId)))
           .get()
           .then(
             (value) => value.map((row) => row.read(noteEntries.note)).toList(),

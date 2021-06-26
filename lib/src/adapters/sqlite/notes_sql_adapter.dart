@@ -41,12 +41,12 @@ class NotesSQLAdapter extends NotesDataAdapter {
   Future<List<Note>> getNotes({
     String lastId = "",
     int limit = 10,
-    Label? label,
+    String? labelId,
   }) async {
     return _database.getNotes(
       lastId: lastId,
       limit: limit,
-      label: label,
+      labelId: labelId,
     );
   }
 
