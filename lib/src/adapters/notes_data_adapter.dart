@@ -5,7 +5,7 @@ abstract class NotesDataAdapter {
   Future<List<Note>> getNotes({
     String lastId = "",
     int limit = 10,
-    Label? label,
+    String? labelId,
   });
   Future<Note?> saveNote(Note note);
   Future<void> saveNotes(List<Note> notes);

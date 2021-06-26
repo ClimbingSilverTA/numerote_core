@@ -121,9 +121,9 @@ void main() {
           ),
         );
         expect(await core.notes.find(), hasLength(2));
-        expect(await core.notes.find(label: label), hasLength(1));
+        expect(await core.notes.find(labelId: label.documentId), hasLength(1));
         expect(
-          (await core.notes.find(label: label)).first.contents,
+          (await core.notes.find(labelId: label.documentId)).first.contents,
           "This has a label attached",
         );
       });
@@ -211,10 +211,10 @@ void main() {
           labels: [fruitLabel!],
         ));
 
-        notes = await core.notes.find(limit: 3, label: fruitLabel);
+        notes = await core.notes.find(limit: 3, labelId: fruitLabel.documentId);
         expect(notes, hasLength(1));
 
-        notes = await core.notes.find(limit: 3, label: mathLabel);
+        notes = await core.notes.find(limit: 3, labelId: mathLabel?.documentId);
         expect(notes, isEmpty);
       });
 

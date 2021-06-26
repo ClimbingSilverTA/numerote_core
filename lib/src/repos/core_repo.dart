@@ -35,13 +35,13 @@ class CoreRepo<R> {
   Future<List<R>> find({
     String lastId = "",
     int limit = 10,
-    Label? label,
+    String? labelId,
   }) async {
     if (this is CoreRepo<Note>) {
       return await _adapter.getNotes(
         lastId: lastId,
         limit: limit,
-        label: label,
+        labelId: labelId,
       ) as List<R>;
     } else if (this is CoreRepo<Label>) {
       return await _adapter.getLabels(
