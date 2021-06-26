@@ -1,3 +1,6 @@
+## v1.3.0
+- Notes are now filtered by a Label's `documentId` rather than the object itself.
+
 ## v1.2.0
 - Fixed pagination issues(unintended skipping etc.).
 
