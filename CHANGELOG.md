@@ -1,3 +1,6 @@
+## v1.4.0
+- Upgraded some outdated packages(including moor).
+
 ## v1.3.0
 - Notes are now filtered by a Label's `documentId` rather than the object itself.
 
