@@ -22,16 +22,16 @@ class Label extends DataClass implements Insertable<Label> {
   factory Label.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return Label(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      documentId: stringType
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      documentId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}document_id'])!,
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      createdAtMillis: intType.mapFromDatabaseResponse(
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      createdAtMillis: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}created_at_millis'])!,
-      updatedAtMillis: intType.mapFromDatabaseResponse(
+      updatedAtMillis: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}updated_at_millis'])!,
     );
   }
@@ -112,7 +112,7 @@ class Label extends DataClass implements Insertable<Label> {
           $mrjc(name.hashCode,
               $mrjc(createdAtMillis.hashCode, updatedAtMillis.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Label &&
           other.id == this.id &&
@@ -141,7 +141,7 @@ class LabelsCompanion extends UpdateCompanion<Label> {
     required String name,
     required int createdAtMillis,
     required int updatedAtMillis,
-  })   : documentId = Value(documentId),
+  })  : documentId = Value(documentId),
         name = Value(name),
         createdAtMillis = Value(createdAtMillis),
         updatedAtMillis = Value(updatedAtMillis);
@@ -215,61 +215,40 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
   final String? _alias;
   $LabelsTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedIntColumn id = _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _documentIdMeta = const VerificationMeta('documentId');
-  @override
-  late final GeneratedTextColumn documentId = _constructDocumentId();
-  GeneratedTextColumn _constructDocumentId() {
-    return GeneratedTextColumn('document_id', $tableName, false,
-        $customConstraints: 'UNIQUE');
-  }
-
+  late final GeneratedColumn<String?> documentId = GeneratedColumn<String?>(
+      'document_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedTextColumn name = _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn('name', $tableName, false, maxTextLength: 20);
-  }
-
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 20),
+      typeName: 'TEXT',
+      requiredDuringInsert: true);
   final VerificationMeta _createdAtMillisMeta =
       const VerificationMeta('createdAtMillis');
-  @override
-  late final GeneratedIntColumn createdAtMillis = _constructCreatedAtMillis();
-  GeneratedIntColumn _constructCreatedAtMillis() {
-    return GeneratedIntColumn(
-      'created_at_millis',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<int?> createdAtMillis = GeneratedColumn<int?>(
+      'created_at_millis', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _updatedAtMillisMeta =
       const VerificationMeta('updatedAtMillis');
-  @override
-  late final GeneratedIntColumn updatedAtMillis = _constructUpdatedAtMillis();
-  GeneratedIntColumn _constructUpdatedAtMillis() {
-    return GeneratedIntColumn(
-      'updated_at_millis',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<int?> updatedAtMillis = GeneratedColumn<int?>(
+      'updated_at_millis', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, documentId, name, createdAtMillis, updatedAtMillis];
   @override
-  $LabelsTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'labels';
   @override
-  String get $tableName => _alias ?? 'labels';
-  @override
-  final String actualTableName = 'labels';
+  String get actualTableName => 'labels';
   @override
   VerificationContext validateIntegrity(Insertable<Label> instance,
       {bool isInserting = false}) {
@@ -315,8 +294,8 @@ class $LabelsTable extends Labels with TableInfo<$LabelsTable, Label> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Label map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Label.fromData(data, _db, prefix: effectivePrefix);
+    return Label.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -340,17 +319,16 @@ class Note extends DataClass implements Insertable<Note> {
   factory Note.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return Note(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      documentId: stringType
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      documentId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}document_id'])!,
-      contents: stringType
+      contents: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}contents'])!,
-      createdAtMillis: intType.mapFromDatabaseResponse(
+      createdAtMillis: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}created_at_millis'])!,
-      updatedAtMillis: intType.mapFromDatabaseResponse(
+      updatedAtMillis: const IntType().mapFromDatabaseResponse(
           data['${effectivePrefix}updated_at_millis'])!,
     );
   }
@@ -431,7 +409,7 @@ class Note extends DataClass implements Insertable<Note> {
           $mrjc(contents.hashCode,
               $mrjc(createdAtMillis.hashCode, updatedAtMillis.hashCode)))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Note &&
           other.id == this.id &&
@@ -460,7 +438,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     required String contents,
     required int createdAtMillis,
     required int updatedAtMillis,
-  })   : documentId = Value(documentId),
+  })  : documentId = Value(documentId),
         contents = Value(contents),
         createdAtMillis = Value(createdAtMillis),
         updatedAtMillis = Value(updatedAtMillis);
@@ -534,65 +512,38 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   final String? _alias;
   $NotesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedIntColumn id = _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _documentIdMeta = const VerificationMeta('documentId');
-  @override
-  late final GeneratedTextColumn documentId = _constructDocumentId();
-  GeneratedTextColumn _constructDocumentId() {
-    return GeneratedTextColumn('document_id', $tableName, false,
-        $customConstraints: 'UNIQUE');
-  }
-
+  late final GeneratedColumn<String?> documentId = GeneratedColumn<String?>(
+      'document_id', aliasedName, false,
+      typeName: 'TEXT',
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE');
   final VerificationMeta _contentsMeta = const VerificationMeta('contents');
-  @override
-  late final GeneratedTextColumn contents = _constructContents();
-  GeneratedTextColumn _constructContents() {
-    return GeneratedTextColumn(
-      'contents',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> contents = GeneratedColumn<String?>(
+      'contents', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _createdAtMillisMeta =
       const VerificationMeta('createdAtMillis');
-  @override
-  late final GeneratedIntColumn createdAtMillis = _constructCreatedAtMillis();
-  GeneratedIntColumn _constructCreatedAtMillis() {
-    return GeneratedIntColumn(
-      'created_at_millis',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<int?> createdAtMillis = GeneratedColumn<int?>(
+      'created_at_millis', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   final VerificationMeta _updatedAtMillisMeta =
       const VerificationMeta('updatedAtMillis');
-  @override
-  late final GeneratedIntColumn updatedAtMillis = _constructUpdatedAtMillis();
-  GeneratedIntColumn _constructUpdatedAtMillis() {
-    return GeneratedIntColumn(
-      'updated_at_millis',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<int?> updatedAtMillis = GeneratedColumn<int?>(
+      'updated_at_millis', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, documentId, contents, createdAtMillis, updatedAtMillis];
   @override
-  $NotesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'notes';
   @override
-  String get $tableName => _alias ?? 'notes';
-  @override
-  final String actualTableName = 'notes';
+  String get actualTableName => 'notes';
   @override
   VerificationContext validateIntegrity(Insertable<Note> instance,
       {bool isInserting = false}) {
@@ -638,8 +589,8 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Note map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Note.fromData(data, _db, prefix: effectivePrefix);
+    return Note.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
@@ -655,11 +606,11 @@ class NoteEntry extends DataClass implements Insertable<NoteEntry> {
   factory NoteEntry.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final stringType = db.typeSystem.forDartType<String>();
     return NoteEntry(
-      note: stringType.mapFromDatabaseResponse(data['${effectivePrefix}note'])!,
-      label:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}label'])!,
+      note: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}note'])!,
+      label: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}label'])!,
     );
   }
   @override
@@ -710,7 +661,7 @@ class NoteEntry extends DataClass implements Insertable<NoteEntry> {
   @override
   int get hashCode => $mrjf($mrjc(note.hashCode, label.hashCode));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NoteEntry &&
           other.note == this.note &&
@@ -727,7 +678,7 @@ class NoteEntriesCompanion extends UpdateCompanion<NoteEntry> {
   NoteEntriesCompanion.insert({
     required String note,
     required String label,
-  })   : note = Value(note),
+  })  : note = Value(note),
         label = Value(label);
   static Insertable<NoteEntry> custom({
     Expression<String>? note,
@@ -774,35 +725,19 @@ class $NoteEntriesTable extends NoteEntries
   final String? _alias;
   $NoteEntriesTable(this._db, [this._alias]);
   final VerificationMeta _noteMeta = const VerificationMeta('note');
-  @override
-  late final GeneratedTextColumn note = _constructNote();
-  GeneratedTextColumn _constructNote() {
-    return GeneratedTextColumn(
-      'note',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> note = GeneratedColumn<String?>(
+      'note', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _labelMeta = const VerificationMeta('label');
-  @override
-  late final GeneratedTextColumn label = _constructLabel();
-  GeneratedTextColumn _constructLabel() {
-    return GeneratedTextColumn(
-      'label',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> label = GeneratedColumn<String?>(
+      'label', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [note, label];
   @override
-  $NoteEntriesTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'note_entries';
   @override
-  String get $tableName => _alias ?? 'note_entries';
-  @override
-  final String actualTableName = 'note_entries';
+  String get actualTableName => 'note_entries';
   @override
   VerificationContext validateIntegrity(Insertable<NoteEntry> instance,
       {bool isInserting = false}) {
@@ -827,8 +762,8 @@ class $NoteEntriesTable extends NoteEntries
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   NoteEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return NoteEntry.fromData(data, _db, prefix: effectivePrefix);
+    return NoteEntry.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
