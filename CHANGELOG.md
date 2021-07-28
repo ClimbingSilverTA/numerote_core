@@ -1,3 +1,7 @@
+## v1.5.0
+- Removed unnecessary platform folders(Android, iOS).
+- Added `searchTerm` argument to `find` method for filtering `Note` by text search.
+
 ## v1.4.0
 - Upgraded some outdated packages(including moor).
 
