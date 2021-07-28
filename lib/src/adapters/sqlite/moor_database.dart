@@ -85,6 +85,7 @@ class MoorDatabase extends _$MoorDatabase {
     String lastId = "",
     int limit = 10,
     String? labelId,
+    String? searchTerm,
   }) async {
     var query = select(notes)
       ..orderBy([
@@ -114,6 +115,10 @@ class MoorDatabase extends _$MoorDatabase {
             (value) => value.map((row) => row.read(noteEntries.note)).toList(),
           );
       query = query..where((n) => n.documentId.isIn(searchIds));
+    }
+
+    if (searchTerm != null) {
+      query = query..where((n) => n.contents.like("%$searchTerm%"));
     }
 
     final existingNotes = await (query..limit(limit)).get();

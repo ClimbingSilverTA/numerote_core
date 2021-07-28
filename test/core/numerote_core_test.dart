@@ -61,6 +61,37 @@ void main() {
         });
       });
 
+      test('Check that notes can be filtered by search term', () async {
+        expect(await core.notes.find(), isEmpty);
+
+        final notes = [
+          Note.create(contents: "Salmon is tasty"),
+          Note.create(contents: "I really love eating salmon"),
+          Note.create(contents: "Fish is delicious"),
+          Note.create(contents: "Smoked salmon with sushi is so delicious"),
+          Note.create(contents: "Peanut butter and jelly is where it's at!!"),
+          Note.create(contents: "Salmonって英語だっけ？"),
+        ];
+
+        await core.notes.saveAll(notes);
+        expect(await core.notes.find(), isNotEmpty);
+        expect(await core.notes.find(), hasLength(6));
+
+        await core.notes.find(searchTerm: "salmon").then((value) async {
+          expect(value, hasLength(4));
+          final exp = RegExp('salmon', caseSensitive: false);
+
+          for (final note in value) {
+            expect(note.contents.contains(exp), true);
+          }
+        });
+
+        expect(await core.notes.find(searchTerm: "salmon'''"), isEmpty);
+        expect(await core.notes.find(searchTerm: "salmon);"), isEmpty);
+        expect(await core.notes.find(searchTerm: "salmon are tasty"), isEmpty);
+        expect(await core.notes.find(searchTerm: "Salmon"), isNotEmpty);
+      });
+
       test('Check that a Label can be edited/created/deleted', () async {
         expect(await core.notes.find(), isEmpty);
 

@@ -40,6 +40,7 @@ class NotesMemoryAdapter extends NotesDataAdapter {
     String lastId = "",
     int limit = 10,
     String? labelId,
+    String? searchTerm,
   }) async {
     _notes.sortByUpdated();
     final existingIndex = _notes.indexWhere(
@@ -55,6 +56,17 @@ class NotesMemoryAdapter extends NotesDataAdapter {
           }
 
           return false;
+        })
+        .where((element) {
+          if (searchTerm == null) return true;
+
+          try {
+            return element.contents.contains(
+              RegExp(searchTerm, caseSensitive: false),
+            );
+          } catch (e) {
+            return false;
+          }
         })
         .skip(index)
         .take(limit)
