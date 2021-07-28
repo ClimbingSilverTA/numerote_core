@@ -36,12 +36,14 @@ class CoreRepo<R> {
     String lastId = "",
     int limit = 10,
     String? labelId,
+    String? queryString,
   }) async {
     if (this is CoreRepo<Note>) {
       return await _adapter.getNotes(
         lastId: lastId,
         limit: limit,
         labelId: labelId,
+        queryString: queryString,
       ) as List<R>;
     } else if (this is CoreRepo<Label>) {
       return await _adapter.getLabels(

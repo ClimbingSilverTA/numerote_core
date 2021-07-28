@@ -42,11 +42,13 @@ class NotesSQLAdapter extends NotesDataAdapter {
     String lastId = "",
     int limit = 10,
     String? labelId,
+    String? queryString,
   }) async {
     return _database.getNotes(
       lastId: lastId,
       limit: limit,
       labelId: labelId,
+      queryString: queryString,
     );
   }
 
