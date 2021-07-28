@@ -77,7 +77,7 @@ void main() {
         expect(await core.notes.find(), isNotEmpty);
         expect(await core.notes.find(), hasLength(6));
 
-        await core.notes.find(queryString: "salmon").then((value) async {
+        await core.notes.find(searchTerm: "salmon").then((value) async {
           expect(value, hasLength(4));
           final exp = RegExp('salmon', caseSensitive: false);
 
@@ -86,8 +86,10 @@ void main() {
           }
         });
 
-        expect(await core.notes.find(queryString: "salmon'''"), isEmpty);
-        expect(await core.notes.find(queryString: "salmon);"), isEmpty);
+        expect(await core.notes.find(searchTerm: "salmon'''"), isEmpty);
+        expect(await core.notes.find(searchTerm: "salmon);"), isEmpty);
+        expect(await core.notes.find(searchTerm: "salmon are tasty"), isEmpty);
+        expect(await core.notes.find(searchTerm: "Salmon"), isNotEmpty);
       });
 
       test('Check that a Label can be edited/created/deleted', () async {

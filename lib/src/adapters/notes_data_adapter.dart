@@ -6,7 +6,7 @@ abstract class NotesDataAdapter {
     String lastId = "",
     int limit = 10,
     String? labelId,
-    String? queryString,
+    String? searchTerm,
   });
   Future<Note?> saveNote(Note note);
   Future<void> saveNotes(List<Note> notes);
